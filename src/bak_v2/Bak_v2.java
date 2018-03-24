@@ -15,7 +15,7 @@ public class Bak_v2 {
         FilePanel filePanel = new FilePanel(neuModel);
         SettingsPanel settingsPanel = new SettingsPanel(neuModel);
         SettingsExtendPanel settingExtendPanel = new SettingsExtendPanel(neuModel);
-        TrainingPanel trainingPanel = new TrainingPanel("Chyba sieťe", "Iterácie", "MSE", neuModel.getGraphData());
+        TrainingPanel trainingPanel = new TrainingPanel(neuModel, "Chyba sieťe", "Iterácie", "MSE", neuModel.getGraphData(), neuModel.getSuccessData());
         
         AppView appView = new AppView(neuModel, navBar, filePanel, settingsPanel, settingExtendPanel, trainingPanel);
         

@@ -27,6 +27,11 @@ public class AppView extends JFrame {
     private SettingsExtendPanel settingExtendPanel;
     private FilePanel filePanel;
     
+    public void printValues() {
+        trainingPanel.errTrainLabel(String.valueOf(v_neuModel.getErrTrain()));
+        trainingPanel.iterationLabel(String.valueOf(v_neuModel.getIteration()));
+    }
+    
     public void showSettingsPanel() {
         CardLayout cardLayout = (CardLayout)(panelCards.getLayout());
         navBar.unHighlightData();
@@ -73,7 +78,7 @@ public class AppView extends JFrame {
         this.settingExtendPanel = settingExtendPanel;
         
         this.v_neuModel = neuModel;
-        this.trainingPanel = new TrainingPanel("Chyba sieťe", "Iterácie", "MSE", v_neuModel.getGraphData());
+        this.trainingPanel = new TrainingPanel(neuModel, "Chyba sieťe", "Iterácie", "MSE", v_neuModel.getGraphData(), v_neuModel.getSuccessData());
         this.setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         this.setSize(new Dimension(1000, 800));
       

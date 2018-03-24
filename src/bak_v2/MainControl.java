@@ -87,27 +87,27 @@ public class MainControl {
             isBreastCancer = c_filePanel.isSelectedBreastCancer();
             isDermatology = c_filePanel.isSelectedDermatology();
             isCustom = c_filePanel.isSelectedCustom();
-            if(isParkinson == true || isArrhytmia == true || isBreastCancer == true || isDermatology == true || isCustom == true) {
-                if(isParkinson == true) {
+            if(isParkinson || isArrhytmia || isBreastCancer || isDermatology || isCustom) {
+                if(isParkinson) {
                     c_neuModel.setIsParkinson(true);
                     disableInputASetValue(16, 2, "MedicalData/parkinsons.data.txt");
                 }
-                else if(isArrhytmia == true) {
+                else if(isArrhytmia) {
                     c_neuModel.setIsArrhythmia(true);
                     c_neuModel.setIsParkinson(false);
                     disableInputASetValue(277, 10, "MedicalData/arrhythmia.data.csv");
                 }
-                else if(isBreastCancer == true) {
+                else if(isBreastCancer) {
                     c_neuModel.setIsBreastCancer(true);
                     c_neuModel.setIsParkinson(false);
                     disableInputASetValue(30, 2, "MedicalData/BreastCancer.data.txt");
                 }
-                else if(isDermatology == true) {
+                else if(isDermatology) {
                     c_neuModel.setIsDermatology(true);
                     c_neuModel.setIsParkinson(false);
                     disableInputASetValue(34, 6, "MedicalData/dermatology.data.txt");
                 }
-                else if (isCustom == true){
+                else if (isCustom){
                     c_neuModel.setIsCustom(true);
                     c_neuModel.setIsParkinson(false);
                 }
@@ -197,6 +197,7 @@ public class MainControl {
             }
             TrainWorker work = new TrainWorker(c_appView, c_neuModel);
             work.execute();
+            System.out.println("000");
         }
         
     }
@@ -273,7 +274,7 @@ public class MainControl {
                 is_maxErr = false;
             }             
             
-            if(is_inNeu == true && is_hidNeu == true  && is_outNeu == true && is_maxIt == true && is_momentum == true && is_rate == true && is_maxErr == true) {
+            if(is_inNeu && is_hidNeu && is_outNeu && is_maxIt && is_momentum && is_rate && is_maxErr) {
                 //Add values to model
                 c_neuModel.setInNeu(inNeu);
                 c_neuModel.setHidNeu(hidNeu);

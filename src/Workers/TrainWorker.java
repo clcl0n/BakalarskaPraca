@@ -18,6 +18,7 @@ public class TrainWorker extends SwingWorker<Integer, String> {
             mse = w_neuModel.netTrain();
             this.w_neuModel.addValues(i, mse[0]);
             this.w_neuModel.addTestValues(i, mse[1]);
+            this.w_neuModel.addSuccessValues(i, this.w_neuModel.calculateSuccess());
             if(mse[0] < maxErr) {
                 break;
             }

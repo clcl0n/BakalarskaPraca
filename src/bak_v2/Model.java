@@ -14,10 +14,16 @@ import org.neuroph.util.data.norm.MaxMinNormalizer;
 
 public class Model {
     
+    private int iteration = 0;
+    private double errTrain = 0.0;
+    
     private XYSeries dataSeries;
     private XYSeriesCollection seriesCollection;
     
     private XYSeries testSeries;
+    
+    private XYSeries dataSeriesSuccess;
+    private XYSeriesCollection seriesCollectionSuccess;
     
     private int inNeu, hidNeu = 5, outNeu;
     private int maxIt = 10000;
@@ -190,6 +196,22 @@ public class Model {
     public void addValues(int x, double y){
         dataSeries.add(x, y);
     }
+
+    public int getIteration() {
+        return iteration;
+    }
+
+    public void setIteration(int iteration) {
+        this.iteration = iteration;
+    }
+
+    public double getErrTrain() {
+        return errTrain;
+    }
+
+    public void setErrTrain(double errTrain) {
+        this.errTrain = errTrain;
+    }
     
     public void addTestValues(int x, double y) {
         this.testSeries.add(x, y);
@@ -199,12 +221,23 @@ public class Model {
         return this.seriesCollection;
     }
     
+    public void addSuccessValues(int x, double y) {
+        this.dataSeriesSuccess.add(x, y);
+    }
+    
+    public XYSeriesCollection getSuccessData() {
+        return this.seriesCollectionSuccess;
+    }
+    
     public Model() {
         this.dataSeries = new XYSeries("Trénovanie");
         this.seriesCollection = new XYSeriesCollection();
         this.seriesCollection.addSeries(this.dataSeries);
         this.testSeries = new XYSeries("Testovanie");
         this.seriesCollection.addSeries(this.testSeries);
+        this.dataSeriesSuccess = new XYSeries("Úspešnosť");
+        this.seriesCollectionSuccess = new XYSeriesCollection();
+        this.seriesCollectionSuccess.addSeries(this.dataSeriesSuccess);
     }
     
     public void setFileDataPath(String str) {
@@ -329,6 +362,51 @@ public class Model {
 
     public void mix() {
         this.net.mixTrainAndTestData();
+    }
+    
+    public double calculateSuccess() {
+        int records = numOfRecords();
+        int[] results = getClassOutput();
+        int outClass = results.length;
+        int[] desireResult = getClassDesireOutput();
+            int dimension = outClass + 1;
+            double [][]resultTop = new double[dimension][dimension];
+            double [][]resultBot = new double[dimension][dimension];
+            int wrong, good;
+            for(int r = 0; r < outClass; r++) {
+                wrong = Math.abs(desireResult[r] - results[r]);
+                good = desireResult[r] - wrong;
+                if(good > 0) {
+                    //good
+                    resultTop[r][r] = good;//Math.abs(desireResult[r] - Math.abs(desireResult[r] - results[r]));
+                    //goodP
+                    resultBot[r][r] = (resultTop[r][r] / (records * 1.0) ) * 100.0;                        
+                }
+                //sumGood
+                resultTop[outClass][outClass] += resultBot[r][r];
+                for(int c = 0; c < outClass; c++) { 
+                    if(c != r) {
+                            //bad
+                            wrong = Math.abs(desireResult[r] - results[r]);
+                            if(wrong > 0) {
+                                for(int i = 0; i < outClass; i++) {
+                                    wrong = (desireResult[r] - results[r]);
+                                    if(wrong > 0 && c != i) {
+                                        resultTop[r][c] = wrong;
+                                        resultBot[r][c] = (resultTop[r][c] / (records * 1.0) )  * 100.0;
+                                        break;
+                                    }
+                                }
+                            }
+                        //badP
+                        resultBot[outClass][outClass] += resultBot[r][c];
+                        if(wrong > 0) {
+                            break;
+                        }
+                    }
+                }
+            }
+            return resultTop[dimension-1][dimension-1];
     }
     
 }
