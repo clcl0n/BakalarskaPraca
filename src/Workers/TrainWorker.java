@@ -13,7 +13,7 @@ public class TrainWorker extends SwingWorker<Integer, String> {
         int maxIt = w_neuModel.getMaxIt();
         double[] mse;
         double maxErr;
-        maxErr = w_neuModel.getMaxErr();
+        maxErr = w_neuModel.getMaxErr(); 
         for(int i = 0; i < maxIt; i++) {
             mse = w_neuModel.netTrain();
             this.w_neuModel.addValues(i, mse[0]);
@@ -22,7 +22,7 @@ public class TrainWorker extends SwingWorker<Integer, String> {
                 break;
             }
             if((i % 100) == 0) {
-                this.w_neuModel.mix();            
+               //this.w_neuModel.mix();            
             }
         }
     }

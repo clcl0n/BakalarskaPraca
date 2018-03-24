@@ -82,7 +82,7 @@ public class MultiLayerPerceptronNet extends MultiLayerPerceptron {
         int testSize = this.trainingAndTestSet[1].size();
         int size;
         DataSetRow tmp;
-        for(int i = 0; i < 1500; i++) {
+        for(int i = 0; i < 150; i++) {
             n1 = rand.nextInt(trainSize);
             n2 = rand.nextInt(testSize);
             tmp = this.trainingAndTestSet[0].get(n1);

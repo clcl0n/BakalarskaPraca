@@ -38,6 +38,25 @@ public class Model {
     private DataSet trainingSet;
     private MultiLayerPerceptronNet net;
     
+    private int testDiv = 20, trainDiv = 80;
+    private int packages;
+    
+    public int getTestDiv() {
+        return testDiv;
+    }
+
+    public void setTestDiv(int testDiv) {
+        this.testDiv = testDiv;
+    }
+
+    public int getTrainDiv() {
+        return trainDiv;
+    }
+
+    public void setTrainDiv(int trainDiv) {
+        this.trainDiv = trainDiv;
+    }
+    
     public int[] getClassDesireOutput() {
         return net.getClassDesireOutput();
     }    
@@ -138,7 +157,7 @@ public class Model {
         net.setAtributesMomentumBackpropagation(rate, momentum, maxErr);
         normalizeData();
         net.setTrainingSet(trainingSet);
-        net.divideDataSet(90, 10);
+        net.divideDataSet(this.testDiv, this.trainDiv);
     }
     
     public boolean createParkinsonNeuNet() {

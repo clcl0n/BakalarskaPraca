@@ -34,6 +34,8 @@ public class MainControl {
         c_settingsPanel.addToExtendSettingsActionListener(new NextToExtendSettingsListener());
         c_settingsPanel.addFilePathListener(new FilePathListener());
         c_settingExtendPanel.addTrainingActionListener(new TrainActionListener());
+        c_settingExtendPanel.addRandomDivDataSetListener(new DivDataSetListener());
+        c_settingExtendPanel.addPackagesDivDataSetListener(new DivDataSetListener());
         c_filePanel.addChooseFileTypeListener(new ChooseFileTypeListener());
         c_trainingPanel.addNeuModelActionListener(new NeuModelListener());
         c_trainingPanel.addConfusionMatrixListener(new ConfusionMatrixListener());
@@ -134,26 +136,53 @@ public class MainControl {
         
     }    
     
+    class DivDataSetListener implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent ae) {
+            boolean isRandom, isPackages;
+            isRandom = c_settingExtendPanel.isSelectedRandom();
+            isPackages = c_settingExtendPanel.isSelectedPackages();
+            if(isRandom) {
+                c_settingExtendPanel.enableRandom();
+            }
+            else {
+                c_settingExtendPanel.enablePackages();
+            }
+        }
+        
+    }
+    
     class TrainActionListener implements ActionListener {
         
         @Override
         public void actionPerformed(ActionEvent ae) {
             boolean isSigmoida, isTanh, isGaussian;
+            boolean isRandom, isPackages;
             isSigmoida = c_settingExtendPanel.isSelectedSigmoid();
             isTanh = c_settingExtendPanel.isSelectedTanh();
             isGaussian = c_settingExtendPanel.isSelectedGaussian();
-            if(isSigmoida == true) {
+            isRandom = c_settingExtendPanel.isSelectedRandom();
+            isPackages = c_settingExtendPanel.isSelectedPackages();
+            
+            if(isSigmoida) {
                 c_neuModel.setFnSigmoid();
             }
-            else if(isTanh == true) {
+            else if(isTanh) {
                 c_neuModel.setFnTanh();
             }
-            else if(isGaussian == true) {
+            else if(isGaussian) {
                 c_neuModel.setFnGaussian();
             }
             
-                        
-            
+            if(isRandom) {
+                c_neuModel.setTestDiv(Integer.valueOf(c_settingExtendPanel.getTestDiv()));
+                c_neuModel.setTrainDiv(Integer.valueOf(c_settingExtendPanel.getTrainDiv()));
+            }
+            else {
+                
+            }
+
             if(c_neuModel.getIsParkinson()) {
                 c_neuModel.createParkinsonNeuNet();
             }
@@ -267,7 +296,11 @@ public class MainControl {
             if(!isFilled()) {
                 JOptionPane.showMessageDialog(new Frame(), "Bad input");
             }
-            c_appView.showExtendSettingsPanel();
+            else {
+                c_settingExtendPanel.setTestDIv();
+                c_settingExtendPanel.setTrainDiv();
+                c_appView.showExtendSettingsPanel();                
+            }
         }
         
     }
