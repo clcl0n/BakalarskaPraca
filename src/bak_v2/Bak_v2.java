@@ -1,5 +1,6 @@
 package bak_v2;
 
+import viewPanels.EndTrainingPanel;
 import viewPanels.FilePanel;
 import viewPanels.NavBar;
 import viewPanels.SettingsExtendPanel;
@@ -16,10 +17,11 @@ public class Bak_v2 {
         SettingsPanel settingsPanel = new SettingsPanel(neuModel);
         SettingsExtendPanel settingExtendPanel = new SettingsExtendPanel(neuModel);
         TrainingPanel trainingPanel = new TrainingPanel(neuModel, "Chyba sieťe", "Iterácie", "MSE", neuModel.getGraphData(), neuModel.getSuccessData());
+        EndTrainingPanel endTrainingPanel = new EndTrainingPanel(neuModel);
         
-        AppView appView = new AppView(neuModel, navBar, filePanel, settingsPanel, settingExtendPanel, trainingPanel);
+        AppView appView = new AppView(neuModel, navBar, filePanel, settingsPanel, settingExtendPanel, trainingPanel, endTrainingPanel);
         
-        MainControl mainControl = new MainControl(neuModel, appView, navBar, filePanel, settingsPanel, settingExtendPanel, trainingPanel);
+        MainControl mainControl = new MainControl(neuModel, appView, navBar, filePanel, settingsPanel, settingExtendPanel, trainingPanel, endTrainingPanel);
         
     }
     

@@ -14,6 +14,8 @@ import org.neuroph.util.data.norm.MaxMinNormalizer;
 
 public class Model {
     
+    private boolean end = false;
+    
     private int iteration = 0;
     private double errTrain = 0.0;
     
@@ -26,7 +28,7 @@ public class Model {
     private XYSeriesCollection seriesCollectionSuccess;
     
     private int inNeu, hidNeu = 5, outNeu;
-    private int maxIt = 10000;
+    private int maxIt = 10;
     private double rate = 0.1, momentum = 0.8, maxErr = 0.02;
     
     private TransferFunctionType function;
@@ -34,6 +36,8 @@ public class Model {
     private boolean isParkinson, isArrhythmia, isBreastCancer, isDermatology, isCustom;
     
     private String fileDataPath;
+    
+    private double lastSuccess, lastTestMSE, lastTrainMSE; 
     
     //Default training data
     private ParkinsonDat parkinsonData; 
@@ -46,6 +50,42 @@ public class Model {
     
     private int testDiv = 20, trainDiv = 80;
     private int packages;
+
+    public void saveNet() {
+        net.save("neuralNet.nnet");
+    }
+    
+    public double getLastSuccess() {
+        return lastSuccess;
+    }
+
+    public void setLastSuccess(double lastSuccess) {
+        this.lastSuccess = lastSuccess;
+    }
+
+    public double getLastTestMSE() {
+        return lastTestMSE;
+    }
+
+    public void setLastTestMSE(double lastTestMSE) {
+        this.lastTestMSE = lastTestMSE;
+    }
+
+    public double getLastTrainMSE() {
+        return lastTrainMSE;
+    }
+
+    public void setLastTrainMSE(double lastTrainMSE) {
+        this.lastTrainMSE = lastTrainMSE;
+    }
+    
+    public boolean isEnd() {
+        return end;
+    }
+
+    public void setEnd(boolean end) {
+        this.end = end;
+    }
     
     public int getTestDiv() {
         return testDiv;

@@ -26,6 +26,7 @@ public class TrainingPanel extends JPanel {
     
     private BasicButton modelBtn = new BasicButton("Model");
     private BasicButton confusionBtn = new BasicButton("Confusion Matrix");
+    private BasicButton next = new BasicButton("Dalej");
     
     private XYSeriesCollection seriesCollection;
     private XYSeriesCollection seriesCollectionSucces;
@@ -56,6 +57,10 @@ public class TrainingPanel extends JPanel {
         frame.add(scroll, BorderLayout.CENTER);
         frame.setSize(800, 800);
         frame.setVisible(true);
+    }
+    
+    public void addNextEndListener(ActionListener al) {
+        next.addActionListener(al);
     }
     
     public void addConfusionMatrixListener(ActionListener acl) {
@@ -104,5 +109,6 @@ public class TrainingPanel extends JPanel {
         this.add(confusionBtn);
         this.add(iteration);
         this.add(errTrain);
+        this.add(next);
     }
 }

@@ -11,7 +11,7 @@ public class TrainWorker extends SwingWorker<Integer, String> {
     
     private void startLearning() {
         int maxIt = w_neuModel.getMaxIt();
-        double[] mse;
+        double[] mse = new double[2];
         double maxErr;
         maxErr = w_neuModel.getMaxErr(); 
         for(int i = 0; i < maxIt; i++) {
@@ -26,6 +26,10 @@ public class TrainWorker extends SwingWorker<Integer, String> {
                //this.w_neuModel.mix();            
             }
         }
+        w_neuModel.setEnd(true);
+        w_neuModel.setLastSuccess(this.w_neuModel.calculateSuccessTrain());
+        w_neuModel.setLastTrainMSE(mse[0]);
+        w_neuModel.setLastTestMSE(mse[1]);
     }
     
     public TrainWorker(AppView appView, Model neuModel) {

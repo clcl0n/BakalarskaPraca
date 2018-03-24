@@ -6,6 +6,7 @@ import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JOptionPane;
+import viewPanels.EndTrainingPanel;
 import viewPanels.FilePanel;
 import viewPanels.NavBar;
 import viewPanels.SettingsExtendPanel;
@@ -21,8 +22,9 @@ public class MainControl {
     private SettingsExtendPanel c_settingExtendPanel;
     private TrainingPanel c_trainingPanel;
     private FilePanel c_filePanel;  
+    private EndTrainingPanel c_endTrainingPanel;
     
-    public MainControl(Model neuModel, AppView appView, NavBar navBar, FilePanel filePanel, SettingsPanel settingsPanel, SettingsExtendPanel settingExtendPanel, TrainingPanel trainingPanel) {
+    public MainControl(Model neuModel, AppView appView, NavBar navBar, FilePanel filePanel, SettingsPanel settingsPanel, SettingsExtendPanel settingExtendPanel, TrainingPanel trainingPanel, EndTrainingPanel endTrainingPanel) {
         this.c_neuModel = neuModel;
         this.c_appView = appView;
         this.c_navBar = navBar;
@@ -30,6 +32,7 @@ public class MainControl {
         this.c_settingExtendPanel = settingExtendPanel;
         this.c_trainingPanel = trainingPanel;
         this.c_filePanel = filePanel;
+        this.c_endTrainingPanel = endTrainingPanel;
         
         c_settingsPanel.addToExtendSettingsActionListener(new NextToExtendSettingsListener());
         c_settingsPanel.addFilePathListener(new FilePathListener());
@@ -39,6 +42,8 @@ public class MainControl {
         c_filePanel.addChooseFileTypeListener(new ChooseFileTypeListener());
         c_trainingPanel.addNeuModelActionListener(new NeuModelListener());
         c_trainingPanel.addConfusionMatrixListener(new ConfusionMatrixListener());
+        c_trainingPanel.addNextEndListener(new NextTOEndTrainingPanel());
+        c_endTrainingPanel.addSaveNetListener(new SaveNet());
     }
     
     //Listener declarations
@@ -197,7 +202,32 @@ public class MainControl {
             }
             TrainWorker work = new TrainWorker(c_appView, c_neuModel);
             work.execute();
-            System.out.println("000");
+        }
+        
+    }
+    
+    class NextTOEndTrainingPanel implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent ae) {
+            if(c_neuModel.isEnd()) {
+                c_appView.showEndTrainingPanel();
+                c_endTrainingPanel.setLastSuccess();
+                c_endTrainingPanel.setLastTrainMSE();
+                c_endTrainingPanel.setLastTestMSE();
+            }
+            else {
+                JOptionPane.showMessageDialog(new Frame(), "not finished");
+            }
+        }
+        
+    }
+    
+    class SaveNet implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent ae) {
+            c_neuModel.saveNet();
         }
         
     }

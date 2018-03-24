@@ -19,7 +19,7 @@ public class MultiLayerPerceptronNet extends MultiLayerPerceptron {
     
     DataSet dataSet = null;
     DataSet[] trainingAndTestSet = null;
-        
+    
     /**
      * Constructor for MultiLayerPerceptron network.
      * 
