@@ -369,44 +369,23 @@ public class Model {
         int[] results = getClassOutput();
         int outClass = results.length;
         int[] desireResult = getClassDesireOutput();
-            int dimension = outClass + 1;
-            double [][]resultTop = new double[dimension][dimension];
-            double [][]resultBot = new double[dimension][dimension];
-            int wrong, good;
-            for(int r = 0; r < outClass; r++) {
-                wrong = Math.abs(desireResult[r] - results[r]);
-                good = desireResult[r] - wrong;
-                if(good > 0) {
-                    //good
-                    resultTop[r][r] = good;//Math.abs(desireResult[r] - Math.abs(desireResult[r] - results[r]));
-                    //goodP
-                    resultBot[r][r] = (resultTop[r][r] / (records * 1.0) ) * 100.0;                        
-                }
-                //sumGood
-                resultTop[outClass][outClass] += resultBot[r][r];
-                for(int c = 0; c < outClass; c++) { 
-                    if(c != r) {
-                            //bad
-                            wrong = Math.abs(desireResult[r] - results[r]);
-                            if(wrong > 0) {
-                                for(int i = 0; i < outClass; i++) {
-                                    wrong = (desireResult[r] - results[r]);
-                                    if(wrong > 0 && c != i) {
-                                        resultTop[r][c] = wrong;
-                                        resultBot[r][c] = (resultTop[r][c] / (records * 1.0) )  * 100.0;
-                                        break;
-                                    }
-                                }
-                            }
-                        //badP
-                        resultBot[outClass][outClass] += resultBot[r][c];
-                        if(wrong > 0) {
-                            break;
-                        }
-                    }
-                }
+        int dimension = outClass + 1;
+        double [][]resultTop = new double[dimension][dimension];
+        double [][]resultBot = new double[dimension][dimension];
+        int wrong, good;
+        for(int r = 0; r < outClass; r++) {
+            wrong = Math.abs(desireResult[r] - results[r]);
+            good = desireResult[r] - wrong;
+            if(good > 0) {
+                //good
+                resultTop[r][r] = good;//Math.abs(desireResult[r] - Math.abs(desireResult[r] - results[r]));
+                //goodP
+                resultBot[r][r] = (resultTop[r][r] / (records * 1.0) ) * 100.0;                        
             }
-            return resultTop[dimension-1][dimension-1];
+            //sumGood
+            resultTop[outClass][outClass] += resultBot[r][r];
+        }
+        return resultTop[dimension-1][dimension-1];
     }
     
 }
