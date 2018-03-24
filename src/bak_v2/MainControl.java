@@ -47,7 +47,7 @@ public class MainControl {
 
         @Override
         public void actionPerformed(ActionEvent ae) {
-            c_trainingPanel.ConfusionMatrix(c_neuModel.numOfRecords(), c_neuModel.getClassOutput(), c_neuModel.getClassDesireOutput());
+            c_trainingPanel.ConfusionMatrix(c_neuModel.numOfRecordsTrain(), c_neuModel.getClassOutputTrain(), c_neuModel.getClassDesireOutputTrain());
         }
     
     }

@@ -63,15 +63,27 @@ public class Model {
         this.trainDiv = trainDiv;
     }
     
-    public int[] getClassDesireOutput() {
-        return net.getClassDesireOutput();
+    public int[] getClassDesireOutputTest() {
+        return net.getClassDesireOutputTest();
+    } 
+    
+    public int[] getClassDesireOutputTrain() {
+        return net.getClassDesireOutputTrain();
     }    
     
-    public int[] getClassOutput() {
-        return net.getClassOutput();
+    public int[] getClassOutputTest() {
+        return net.getClassOutputTest();
     }
     
-    public int numOfRecords() {
+    public int[] getClassOutputTrain() {
+        return net.getClassOutputTrain();
+    }
+    
+    public int numOfRecordsTest() {
+        return this.net.trainingAndTestSet[1].size();
+    }
+    
+    public int numOfRecordsTrain() {
         return this.net.trainingAndTestSet[0].size();
     }
     
@@ -163,7 +175,7 @@ public class Model {
         net.setAtributesMomentumBackpropagation(rate, momentum, maxErr);
         normalizeData();
         net.setTrainingSet(trainingSet);
-        net.divideDataSet(this.testDiv, this.trainDiv);
+        net.divideDataSet(this.trainDiv, this.testDiv);
     }
     
     public boolean createParkinsonNeuNet() {
@@ -364,28 +376,34 @@ public class Model {
         this.net.mixTrainAndTestData();
     }
     
-    public double calculateSuccess() {
-        int records = numOfRecords();
-        int[] results = getClassOutput();
+    public double calculateSuccessTest() {
+        int records = numOfRecordsTest();
+        int[] results = getClassOutputTest();
         int outClass = results.length;
-        int[] desireResult = getClassDesireOutput();
-        int dimension = outClass + 1;
-        double [][]resultTop = new double[dimension][dimension];
-        double [][]resultBot = new double[dimension][dimension];
-        int wrong, good;
+        int[] desireResult = getClassDesireOutputTest();
+        int wrong = 0, good = 0, sum = 0;
+        double result = 0.0;
         for(int r = 0; r < outClass; r++) {
-            wrong = Math.abs(desireResult[r] - results[r]);
-            good = desireResult[r] - wrong;
-            if(good > 0) {
-                //good
-                resultTop[r][r] = good;//Math.abs(desireResult[r] - Math.abs(desireResult[r] - results[r]));
-                //goodP
-                resultBot[r][r] = (resultTop[r][r] / (records * 1.0) ) * 100.0;                        
-            }
-            //sumGood
-            resultTop[outClass][outClass] += resultBot[r][r];
+            wrong += Math.abs(desireResult[r] - results[r]);
+            good += desireResult[r] - wrong;
         }
-        return resultTop[dimension-1][dimension-1];
+        result += ((good * 1.0) / records ) * 100.0;
+        return result;
+    }
+    
+    public double calculateSuccessTrain() {
+        int records = numOfRecordsTrain();
+        int[] results = getClassOutputTrain();
+        int outClass = results.length;
+        int[] desireResult = getClassDesireOutputTrain();
+        int wrong = 0, good = 0, sum = 0;
+        double result = 0.0;
+        for(int r = 0; r < outClass; r++) {
+            wrong += Math.abs(desireResult[r] - results[r]);
+            good += desireResult[r] - wrong;
+        }
+        result += ((good * 1.0) / records ) * 100.0;
+        return result;
     }
     
 }
