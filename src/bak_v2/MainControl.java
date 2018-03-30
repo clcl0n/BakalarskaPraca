@@ -229,6 +229,7 @@ public class MainControl {
         @Override
         public void actionPerformed(ActionEvent ae) {
             c_neuModel.saveNet();
+            JOptionPane.showMessageDialog(new Frame(), "Sieť bola uložená");
         }
         
     }
