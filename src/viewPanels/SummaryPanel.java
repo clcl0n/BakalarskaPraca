@@ -6,7 +6,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import viewComponents.buttons.BasicButton;
 
-public class EndTrainingPanel extends JPanel {
+public class SummaryPanel extends JPanel {
     
     private Model neuModel;
     
@@ -15,6 +15,21 @@ public class EndTrainingPanel extends JPanel {
     private JLabel lastTestMSE = new JLabel();
     
     private BasicButton saveNet = new BasicButton("uloženie sieťe");
+    private BasicButton modelBtn = new BasicButton("Model");
+    private BasicButton confusionBtn = new BasicButton("Confusion Matrix");
+    private BasicButton newStart = new BasicButton("Nové trénovanie");
+            
+    public void addNewStartListener(ActionListener acl) {
+        newStart.addActionListener(acl);
+    }
+    
+    public void addConfusionMatrixListener(ActionListener acl) {
+        confusionBtn.addActionListener(acl);
+    }
+    
+    public void addNeuModelActionListener(ActionListener acl) {
+        modelBtn.addActionListener(acl);
+    }    
     
     public void setLastSuccess() {
         this.lastSuccess.setText(String.valueOf(neuModel.getLastSuccess()));
@@ -32,12 +47,15 @@ public class EndTrainingPanel extends JPanel {
         this.saveNet.addActionListener(al);
     }
     
-    public EndTrainingPanel(Model neuModel) {
+    public SummaryPanel(Model neuModel) {
         this.neuModel = neuModel;
         this.add(lastSuccess);
         this.add(lastTrainMSE);
         this.add(lastTestMSE);
         this.add(saveNet);
+        this.add(modelBtn);
+        this.add(confusionBtn);
+        this.add(newStart);
     }
     
 }

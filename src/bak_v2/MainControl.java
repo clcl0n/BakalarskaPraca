@@ -6,7 +6,7 @@ import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JOptionPane;
-import viewPanels.EndTrainingPanel;
+import viewPanels.SummaryPanel;
 import viewPanels.FilePanel;
 import viewPanels.NavBar;
 import viewPanels.SettingsExtendPanel;
@@ -22,9 +22,9 @@ public class MainControl {
     private SettingsExtendPanel c_settingExtendPanel;
     private TrainingPanel c_trainingPanel;
     private FilePanel c_filePanel;  
-    private EndTrainingPanel c_endTrainingPanel;
+    private SummaryPanel c_endTrainingPanel;
     
-    public MainControl(Model neuModel, AppView appView, NavBar navBar, FilePanel filePanel, SettingsPanel settingsPanel, SettingsExtendPanel settingExtendPanel, TrainingPanel trainingPanel, EndTrainingPanel endTrainingPanel) {
+    public MainControl(Model neuModel, AppView appView, NavBar navBar, FilePanel filePanel, SettingsPanel settingsPanel, SettingsExtendPanel settingExtendPanel, TrainingPanel trainingPanel, SummaryPanel endTrainingPanel) {
         this.c_neuModel = neuModel;
         this.c_appView = appView;
         this.c_navBar = navBar;
@@ -40,10 +40,11 @@ public class MainControl {
         c_settingExtendPanel.addRandomDivDataSetListener(new DivDataSetListener());
         c_settingExtendPanel.addPackagesDivDataSetListener(new DivDataSetListener());
         c_filePanel.addChooseFileTypeListener(new ChooseFileTypeListener());
-        c_trainingPanel.addNeuModelActionListener(new NeuModelListener());
-        c_trainingPanel.addConfusionMatrixListener(new ConfusionMatrixListener());
+        c_endTrainingPanel.addNeuModelActionListener(new NeuModelListener());
+        c_endTrainingPanel.addConfusionMatrixListener(new ConfusionMatrixListener());
         c_trainingPanel.addNextEndListener(new NextTOEndTrainingPanel());
         c_endTrainingPanel.addSaveNetListener(new SaveNet());
+        c_endTrainingPanel.addNewStartListener(new NewStartListener());
     }
     
     //Listener declarations
@@ -228,6 +229,16 @@ public class MainControl {
         @Override
         public void actionPerformed(ActionEvent ae) {
             c_neuModel.saveNet();
+        }
+        
+    }
+    
+    class NewStartListener implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent ae) {
+            c_appView.showFilePanel();
+            c_neuModel.clear();
         }
         
     }

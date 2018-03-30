@@ -5,7 +5,7 @@ import java.awt.Dimension;
 import javax.swing.GroupLayout;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-import viewPanels.EndTrainingPanel;
+import viewPanels.SummaryPanel;
 import viewPanels.FilePanel;
 import viewPanels.NavBar;
 import viewPanels.SettingsExtendPanel;
@@ -27,16 +27,25 @@ public class AppView extends JFrame {
     private TrainingPanel trainingPanel;
     private SettingsExtendPanel settingExtendPanel;
     private FilePanel filePanel;
-    private EndTrainingPanel endTrainigPanel;
+    private SummaryPanel endTrainigPanel;
     
     public void printValues() {
         trainingPanel.errTrainLabel(String.valueOf(v_neuModel.getErrTrain()));
         trainingPanel.iterationLabel(String.valueOf(v_neuModel.getIteration()));
     }
     
+    public void showFilePanel() {
+        CardLayout cardLayout = (CardLayout)(panelCards.getLayout());
+        navBar.unHighlightSummary();
+        navBar.highlightData();
+        cardLayout.show(panelCards, "fileType");
+    }
+    
     public void showEndTrainingPanel() {
         CardLayout cardLayout = (CardLayout)(panelCards.getLayout());
         //HighlightData
+        navBar.unHighlightTraining();
+        navBar.highlightSummary();
         cardLayout.show(panelCards, "end");
     }
     
@@ -77,7 +86,7 @@ public class AppView extends JFrame {
         );          
     }
     
-    public AppView(Model neuModel, NavBar navBar, FilePanel filePanel, SettingsPanel settingsPanel, SettingsExtendPanel settingExtendPanel, TrainingPanel trainingPanel, EndTrainingPanel endTrainigPanel) {
+    public AppView(Model neuModel, NavBar navBar, FilePanel filePanel, SettingsPanel settingsPanel, SettingsExtendPanel settingExtendPanel, TrainingPanel trainingPanel, SummaryPanel endTrainigPanel) {
         super("Bak_V2");
         this.navBar = navBar;
         this.filePanel = filePanel;

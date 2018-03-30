@@ -28,7 +28,7 @@ public class Model {
     private XYSeriesCollection seriesCollectionSuccess;
     
     private int inNeu, hidNeu = 5, outNeu;
-    private int maxIt = 10;
+    private int maxIt = 100;
     private double rate = 0.1, momentum = 0.8, maxErr = 0.02;
     
     private TransferFunctionType function;
@@ -49,8 +49,42 @@ public class Model {
     private MultiLayerPerceptronNet net;
     
     private int testDiv = 20, trainDiv = 80;
-    private int packages;
+    private int packages = 0;
 
+    public void clear() {
+        dataSeries.clear();
+        dataSeriesSuccess.clear();
+        testSeries.clear();
+        packages = 0;
+        testDiv = 20;
+        trainDiv = 80;
+        trainingSet = null;
+        net = null;
+        parkinsonData = null;
+        arrhytmiaData = null;
+        dermatologyData = null;
+        breastCancerData = null;
+        lastSuccess = 0.0; 
+        lastTestMSE = 0.0; 
+        lastTrainMSE = 0.0;
+        fileDataPath = null;
+        isParkinson = false; 
+        isArrhythmia = false; 
+        isBreastCancer = false; 
+        isDermatology = false; 
+        isCustom = false;
+        rate = 0.1; 
+        momentum = 0.8; 
+        maxErr = 0.02;
+        inNeu = 0;
+        hidNeu = 5;
+        outNeu = 0;
+        maxIt = 100;
+        errTrain = 0.0;
+        iteration = 0;
+        end = false;
+    }
+    
     public void saveNet() {
         net.save("neuralNet.nnet");
     }
