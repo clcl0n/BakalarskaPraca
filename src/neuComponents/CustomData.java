@@ -17,6 +17,16 @@ abstract public class CustomData {
 
     private DataSet trainingSet = null;  
     
+    protected int inNeu = 0, outNeu = 0;
+    
+    public CustomData(String filePath, String ch, int inNeu, int outNeu) {
+        this.inNeu = inNeu;
+        this.outNeu = outNeu;
+        this.dataContent = readFile(filePath);
+        createData(ch);
+        createTrainSet();
+    }
+    
     public CustomData(String filePath, String ch) {
         this.dataContent = readFile(filePath);
         createData(ch);

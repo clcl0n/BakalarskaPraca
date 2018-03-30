@@ -85,6 +85,19 @@ public class MainControl {
             c_settingsPanel.disableGetFile();
         }
         
+        private void custom() {
+            c_settingsPanel.setInNeu(0);
+            c_settingsPanel.setOutNeu(0);
+            c_settingsPanel.setHidNeu();
+            c_settingsPanel.setMaxIt();
+            c_settingsPanel.setMaxErr();
+            c_settingsPanel.setRate();
+            c_settingsPanel.setMomentum();
+            c_settingsPanel.enableInNeu();
+            c_settingsPanel.enableOutNeu();
+            c_settingsPanel.enableGetFile();
+        }
+        
         @Override
         public void actionPerformed(ActionEvent ae) {
             boolean isParkinson, isArrhytmia, isBreastCancer, isDermatology, isCustom;
@@ -116,6 +129,7 @@ public class MainControl {
                 else if (isCustom){
                     c_neuModel.setIsCustom(true);
                     c_neuModel.setIsParkinson(false);
+                    custom();
                 }
                 c_appView.showSettingsPanel();
                 }
@@ -200,6 +214,9 @@ public class MainControl {
             }
             else if(c_neuModel.getIsBreastCancer()) {
                 c_neuModel.createBreastCancerNeuNet();
+            }
+            else if(c_neuModel.getIsCustom()) {
+                c_neuModel.createCustomNeuNet();
             }
             TrainWorker work = new TrainWorker(c_appView, c_neuModel);
             work.execute();

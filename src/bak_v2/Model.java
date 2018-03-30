@@ -3,6 +3,8 @@ package bak_v2;
 import java.util.List;
 import neuComponents.ArrhythmiaDat;
 import neuComponents.BreastCancerDat;
+import neuComponents.CustomData;
+import neuComponents.CustomTrainData;
 import neuComponents.DermatologyDat;
 import neuComponents.ParkinsonDat;
 import org.jfree.data.xy.XYSeries;
@@ -44,6 +46,7 @@ public class Model {
     private ArrhythmiaDat arrhytmiaData;
     private DermatologyDat dermatologyData;
     private BreastCancerDat breastCancerData;
+    private CustomTrainData customData;
     
     private DataSet trainingSet;
     private MultiLayerPerceptronNet net;
@@ -64,6 +67,7 @@ public class Model {
         arrhytmiaData = null;
         dermatologyData = null;
         breastCancerData = null;
+        customData = null;
         lastSuccess = 0.0; 
         lastTestMSE = 0.0; 
         lastTrainMSE = 0.0;
@@ -177,6 +181,28 @@ public class Model {
         net.trainNet(1);
         return net.getMSE();
     }
+    
+    public boolean createCustomNeuNet() {
+        if(createCustomData()) {
+            trainingSet = customData.getTrainingSet();
+            setupNeuNet();
+        }
+        else {
+            return false;
+        }
+        return true;
+    }
+    
+    private boolean createCustomData() {
+        try {
+            customData = new CustomTrainData(fileDataPath, this.inNeu, this.outNeu);
+        }
+        catch(Exception ex) {
+            System.out.println(ex);
+            return false;
+        }
+        return true;        
+    } 
     
     public boolean createBreastCancerNeuNet() {
         if(createBreastCancerData()) {
@@ -380,6 +406,10 @@ public class Model {
     
     public int getMaxIt() {
         return this.maxIt;
+    }
+    
+    public boolean getIsCustom() {
+        return this.isCustom;
     }
     
     public boolean getIsParkinson() {
