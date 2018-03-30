@@ -204,8 +204,20 @@ public class SettingsPanel extends JPanel {
         inMaxErr.setText(String.valueOf(neuModel.getMaxErr()));
     }
     
+    public void enableGetFile() {
+        getFile.setEnabled(true);
+    }
+    
     public void disableGetFile() {
         getFile.setEnabled(false);
+    }
+    
+    public void enableInNeu() {
+        inInNeu.setEditable(true);
+    }
+    
+    public void enableOutNeu() {
+        inOutNeu.setEditable(true);
     }
     
     public void disableInNeu() {

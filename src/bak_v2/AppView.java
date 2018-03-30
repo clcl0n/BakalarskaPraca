@@ -5,6 +5,7 @@ import java.awt.Dimension;
 import javax.swing.GroupLayout;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import viewPanels.SummaryPanel;
 import viewPanels.FilePanel;
 import viewPanels.NavBar;
 import viewPanels.SettingsExtendPanel;
@@ -26,6 +27,27 @@ public class AppView extends JFrame {
     private TrainingPanel trainingPanel;
     private SettingsExtendPanel settingExtendPanel;
     private FilePanel filePanel;
+    private SummaryPanel endTrainigPanel;
+    
+    public void printValues() {
+        trainingPanel.errTrainLabel(String.valueOf(v_neuModel.getErrTrain()));
+        trainingPanel.iterationLabel(String.valueOf(v_neuModel.getIteration()));
+    }
+    
+    public void showFilePanel() {
+        CardLayout cardLayout = (CardLayout)(panelCards.getLayout());
+        navBar.unHighlightSummary();
+        navBar.highlightData();
+        cardLayout.show(panelCards, "fileType");
+    }
+    
+    public void showEndTrainingPanel() {
+        CardLayout cardLayout = (CardLayout)(panelCards.getLayout());
+        //HighlightData
+        navBar.unHighlightTraining();
+        navBar.highlightSummary();
+        cardLayout.show(panelCards, "end");
+    }
     
     public void showSettingsPanel() {
         CardLayout cardLayout = (CardLayout)(panelCards.getLayout());
@@ -64,16 +86,17 @@ public class AppView extends JFrame {
         );          
     }
     
-    public AppView(Model neuModel, NavBar navBar, FilePanel filePanel, SettingsPanel settingsPanel, SettingsExtendPanel settingExtendPanel, TrainingPanel trainingPanel) {
+    public AppView(Model neuModel, NavBar navBar, FilePanel filePanel, SettingsPanel settingsPanel, SettingsExtendPanel settingExtendPanel, TrainingPanel trainingPanel, SummaryPanel endTrainigPanel) {
         super("Bak_V2");
         this.navBar = navBar;
         this.filePanel = filePanel;
         this.settingsPanel = settingsPanel;
         this.trainingPanel = trainingPanel;
         this.settingExtendPanel = settingExtendPanel;
+        this.endTrainigPanel = endTrainigPanel;
         
         this.v_neuModel = neuModel;
-        this.trainingPanel = new TrainingPanel("Chyba sieťe", "Iterácie", "MSE", v_neuModel.getGraphData());
+        this.trainingPanel = new TrainingPanel(neuModel, "Chyba sieťe", "Iterácie", "MSE", v_neuModel.getGraphData(), v_neuModel.getSuccessData());
         this.setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         this.setSize(new Dimension(1000, 800));
       
@@ -83,6 +106,7 @@ public class AppView extends JFrame {
         this.panelCards.add("settings", settingsPanel);
         this.panelCards.add("settingsExtend", settingExtendPanel);
         this.panelCards.add("training", trainingPanel);
+        this.panelCards.add("end", endTrainigPanel);
         
         this.initLayout();
         navBar.highlightData();

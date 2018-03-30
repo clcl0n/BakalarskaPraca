@@ -4,6 +4,7 @@ import bak_v2.Model;
 import java.awt.event.ActionListener;
 import javax.swing.ButtonGroup;
 import javax.swing.JPanel;
+import viewComponents.Input;
 import viewComponents.RadioBtn;
 import viewComponents.Separator;
 import viewComponents.buttons.BasicButton;
@@ -24,16 +25,66 @@ public class SettingsExtendPanel extends JPanel {
     RadioBtn sigmoid = new RadioBtn("Sigmoida");
     RadioBtn tanh = new RadioBtn("Tanh");
     RadioBtn gaussian = new RadioBtn("Gaussian");
+    RadioBtn random = new RadioBtn("Náhodné rozdelenie");
+    RadioBtn packages = new RadioBtn("Balíky");
     
     //Radio button group
-    ButtonGroup buttonGroup = new ButtonGroup();    
+    ButtonGroup activationFn = new ButtonGroup();    
+    ButtonGroup dataSplit = new ButtonGroup();
+    
+    //Input fields
+    private Input train = new Input();
+    private Input test = new Input();
+    private Input iPackages = new Input();
     
     //Buttons
     BasicButton trainBtn = new BasicButton("Trénovanie");
     
+    public void addRandomDivDataSetListener(ActionListener al) {
+        random.addActionListener(al);
+    }
+    
+    public void addPackagesDivDataSetListener(ActionListener al) {
+        packages.addActionListener(al);
+    }
+    
+    private void disableRandom() {
+        train.setEnabled(false);
+        test.setEnabled(false);
+    }
+    
+    public void enablePackages() {
+        iPackages.setEnabled(true);
+        disableRandom();
+    }
+    
+    private void disablePackages() {
+        iPackages.setEnabled(false);
+    }
+    
+    public void enableRandom() {
+        train.setEnabled(true);
+        test.setEnabled(true);
+        disablePackages();
+    }
+    
+    public String getPackages() {
+        return this.packages.getText();
+    }
+    
     private void setDefValue() {
+        enableRandom();
         sigmoid.setSelected(true);
+        random.setSelected(true);
         neuModel.setFnSigmoid();
+    }
+    
+    public boolean isSelectedPackages() {
+        return packages.isSelected();
+    }
+    
+    public boolean isSelectedRandom() {
+        return random.isSelected();
     }
     
     public boolean isSelectedSigmoid() {
@@ -46,18 +97,42 @@ public class SettingsExtendPanel extends JPanel {
     
     public boolean isSelectedGaussian() {
         return gaussian.isSelected();
-    }    
+    }  
+    
+    public void setTrainDiv() {
+        this.train.setText(String.valueOf(neuModel.getTrainDiv()));
+    } 
+    
+    public void setTestDIv() {
+        this.test.setText(String.valueOf(neuModel.getTestDiv()));
+    }
+    
+    public String getTestDiv() {
+        return this.test.getText();
+    }
+    
+    public String getTrainDiv() {
+        return this.train.getText();
+    }
     
     private void initLayout() {
         this.add(sigmoid);
         this.add(tanh);
         this.add(gaussian);
         this.add(trainBtn);
+        this.add(train);
+        this.add(test);
+        this.add(random);
+        this.add(packages);
+        this.add(iPackages);
         
+        activationFn.add(sigmoid);
+        activationFn.add(tanh);
+        activationFn.add(gaussian);
         
-        buttonGroup.add(sigmoid);
-        buttonGroup.add(tanh);
-        buttonGroup.add(gaussian);
+        dataSplit.add(random);
+        dataSplit.add(packages);
+        
     }
     
     public void addTrainingActionListener(ActionListener acl) {

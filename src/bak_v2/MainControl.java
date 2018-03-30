@@ -6,6 +6,7 @@ import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JOptionPane;
+import viewPanels.SummaryPanel;
 import viewPanels.FilePanel;
 import viewPanels.NavBar;
 import viewPanels.SettingsExtendPanel;
@@ -21,8 +22,9 @@ public class MainControl {
     private SettingsExtendPanel c_settingExtendPanel;
     private TrainingPanel c_trainingPanel;
     private FilePanel c_filePanel;  
+    private SummaryPanel c_endTrainingPanel;
     
-    public MainControl(Model neuModel, AppView appView, NavBar navBar, FilePanel filePanel, SettingsPanel settingsPanel, SettingsExtendPanel settingExtendPanel, TrainingPanel trainingPanel) {
+    public MainControl(Model neuModel, AppView appView, NavBar navBar, FilePanel filePanel, SettingsPanel settingsPanel, SettingsExtendPanel settingExtendPanel, TrainingPanel trainingPanel, SummaryPanel endTrainingPanel) {
         this.c_neuModel = neuModel;
         this.c_appView = appView;
         this.c_navBar = navBar;
@@ -30,13 +32,19 @@ public class MainControl {
         this.c_settingExtendPanel = settingExtendPanel;
         this.c_trainingPanel = trainingPanel;
         this.c_filePanel = filePanel;
+        this.c_endTrainingPanel = endTrainingPanel;
         
         c_settingsPanel.addToExtendSettingsActionListener(new NextToExtendSettingsListener());
         c_settingsPanel.addFilePathListener(new FilePathListener());
         c_settingExtendPanel.addTrainingActionListener(new TrainActionListener());
+        c_settingExtendPanel.addRandomDivDataSetListener(new DivDataSetListener());
+        c_settingExtendPanel.addPackagesDivDataSetListener(new DivDataSetListener());
         c_filePanel.addChooseFileTypeListener(new ChooseFileTypeListener());
-        c_trainingPanel.addNeuModelActionListener(new NeuModelListener());
-        c_trainingPanel.addConfusionMatrixListener(new ConfusionMatrixListener());
+        c_endTrainingPanel.addNeuModelActionListener(new NeuModelListener());
+        c_endTrainingPanel.addConfusionMatrixListener(new ConfusionMatrixListener());
+        c_trainingPanel.addNextEndListener(new NextTOEndTrainingPanel());
+        c_endTrainingPanel.addSaveNetListener(new SaveNet());
+        c_endTrainingPanel.addNewStartListener(new NewStartListener());
     }
     
     //Listener declarations
@@ -45,7 +53,7 @@ public class MainControl {
 
         @Override
         public void actionPerformed(ActionEvent ae) {
-            c_trainingPanel.ConfusionMatrix(c_neuModel.numOfRecords(), c_neuModel.getClassOutput(), c_neuModel.getClassDesireOutput());
+            c_trainingPanel.ConfusionMatrix(c_neuModel.numOfRecordsTrain(), c_neuModel.getClassOutputTrain(), c_neuModel.getClassDesireOutputTrain());
         }
     
     }
@@ -77,6 +85,19 @@ public class MainControl {
             c_settingsPanel.disableGetFile();
         }
         
+        private void custom() {
+            c_settingsPanel.setInNeu(0);
+            c_settingsPanel.setOutNeu(0);
+            c_settingsPanel.setHidNeu();
+            c_settingsPanel.setMaxIt();
+            c_settingsPanel.setMaxErr();
+            c_settingsPanel.setRate();
+            c_settingsPanel.setMomentum();
+            c_settingsPanel.enableInNeu();
+            c_settingsPanel.enableOutNeu();
+            c_settingsPanel.enableGetFile();
+        }
+        
         @Override
         public void actionPerformed(ActionEvent ae) {
             boolean isParkinson, isArrhytmia, isBreastCancer, isDermatology, isCustom;
@@ -85,29 +106,30 @@ public class MainControl {
             isBreastCancer = c_filePanel.isSelectedBreastCancer();
             isDermatology = c_filePanel.isSelectedDermatology();
             isCustom = c_filePanel.isSelectedCustom();
-            if(isParkinson == true || isArrhytmia == true || isBreastCancer == true || isDermatology == true || isCustom == true) {
-                if(isParkinson == true) {
+            if(isParkinson || isArrhytmia || isBreastCancer || isDermatology || isCustom) {
+                if(isParkinson) {
                     c_neuModel.setIsParkinson(true);
                     disableInputASetValue(16, 2, "MedicalData/parkinsons.data.txt");
                 }
-                else if(isArrhytmia == true) {
+                else if(isArrhytmia) {
                     c_neuModel.setIsArrhythmia(true);
                     c_neuModel.setIsParkinson(false);
                     disableInputASetValue(277, 10, "MedicalData/arrhythmia.data.csv");
                 }
-                else if(isBreastCancer == true) {
+                else if(isBreastCancer) {
                     c_neuModel.setIsBreastCancer(true);
                     c_neuModel.setIsParkinson(false);
                     disableInputASetValue(30, 2, "MedicalData/BreastCancer.data.txt");
                 }
-                else if(isDermatology == true) {
+                else if(isDermatology) {
                     c_neuModel.setIsDermatology(true);
                     c_neuModel.setIsParkinson(false);
                     disableInputASetValue(34, 6, "MedicalData/dermatology.data.txt");
                 }
-                else if (isCustom == true){
+                else if (isCustom){
                     c_neuModel.setIsCustom(true);
                     c_neuModel.setIsParkinson(false);
+                    custom();
                 }
                 c_appView.showSettingsPanel();
                 }
@@ -134,26 +156,53 @@ public class MainControl {
         
     }    
     
+    class DivDataSetListener implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent ae) {
+            boolean isRandom, isPackages;
+            isRandom = c_settingExtendPanel.isSelectedRandom();
+            isPackages = c_settingExtendPanel.isSelectedPackages();
+            if(isRandom) {
+                c_settingExtendPanel.enableRandom();
+            }
+            else {
+                c_settingExtendPanel.enablePackages();
+            }
+        }
+        
+    }
+    
     class TrainActionListener implements ActionListener {
         
         @Override
         public void actionPerformed(ActionEvent ae) {
             boolean isSigmoida, isTanh, isGaussian;
+            boolean isRandom, isPackages;
             isSigmoida = c_settingExtendPanel.isSelectedSigmoid();
             isTanh = c_settingExtendPanel.isSelectedTanh();
             isGaussian = c_settingExtendPanel.isSelectedGaussian();
-            if(isSigmoida == true) {
+            isRandom = c_settingExtendPanel.isSelectedRandom();
+            isPackages = c_settingExtendPanel.isSelectedPackages();
+            
+            if(isSigmoida) {
                 c_neuModel.setFnSigmoid();
             }
-            else if(isTanh == true) {
+            else if(isTanh) {
                 c_neuModel.setFnTanh();
             }
-            else if(isGaussian == true) {
+            else if(isGaussian) {
                 c_neuModel.setFnGaussian();
             }
             
-                        
-            
+            if(isRandom) {
+                c_neuModel.setTestDiv(Integer.valueOf(c_settingExtendPanel.getTestDiv()));
+                c_neuModel.setTrainDiv(Integer.valueOf(c_settingExtendPanel.getTrainDiv()));
+            }
+            else {
+                
+            }
+
             if(c_neuModel.getIsParkinson()) {
                 c_neuModel.createParkinsonNeuNet();
             }
@@ -166,8 +215,48 @@ public class MainControl {
             else if(c_neuModel.getIsBreastCancer()) {
                 c_neuModel.createBreastCancerNeuNet();
             }
+            else if(c_neuModel.getIsCustom()) {
+                c_neuModel.createCustomNeuNet();
+            }
             TrainWorker work = new TrainWorker(c_appView, c_neuModel);
             work.execute();
+        }
+        
+    }
+    
+    class NextTOEndTrainingPanel implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent ae) {
+            if(c_neuModel.isEnd()) {
+                c_appView.showEndTrainingPanel();
+                c_endTrainingPanel.setLastSuccess();
+                c_endTrainingPanel.setLastTrainMSE();
+                c_endTrainingPanel.setLastTestMSE();
+            }
+            else {
+                JOptionPane.showMessageDialog(new Frame(), "not finished");
+            }
+        }
+        
+    }
+    
+    class SaveNet implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent ae) {
+            c_neuModel.saveNet();
+            JOptionPane.showMessageDialog(new Frame(), "Sieť bola uložená");
+        }
+        
+    }
+    
+    class NewStartListener implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent ae) {
+            c_appView.showFilePanel();
+            c_neuModel.clear();
         }
         
     }
@@ -244,7 +333,7 @@ public class MainControl {
                 is_maxErr = false;
             }             
             
-            if(is_inNeu == true && is_hidNeu == true  && is_outNeu == true && is_maxIt == true && is_momentum == true && is_rate == true && is_maxErr == true) {
+            if(is_inNeu && is_hidNeu && is_outNeu && is_maxIt && is_momentum && is_rate && is_maxErr) {
                 //Add values to model
                 c_neuModel.setInNeu(inNeu);
                 c_neuModel.setHidNeu(hidNeu);
@@ -267,7 +356,11 @@ public class MainControl {
             if(!isFilled()) {
                 JOptionPane.showMessageDialog(new Frame(), "Bad input");
             }
-            c_appView.showExtendSettingsPanel();
+            else {
+                c_settingExtendPanel.setTestDIv();
+                c_settingExtendPanel.setTrainDiv();
+                c_appView.showExtendSettingsPanel();                
+            }
         }
         
     }

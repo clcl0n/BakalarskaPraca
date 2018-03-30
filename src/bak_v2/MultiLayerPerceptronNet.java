@@ -19,7 +19,7 @@ public class MultiLayerPerceptronNet extends MultiLayerPerceptron {
     
     DataSet dataSet = null;
     DataSet[] trainingAndTestSet = null;
-        
+    
     /**
      * Constructor for MultiLayerPerceptron network.
      * 
@@ -82,7 +82,7 @@ public class MultiLayerPerceptronNet extends MultiLayerPerceptron {
         int testSize = this.trainingAndTestSet[1].size();
         int size;
         DataSetRow tmp;
-        for(int i = 0; i < 1500; i++) {
+        for(int i = 0; i < 150; i++) {
             n1 = rand.nextInt(trainSize);
             n2 = rand.nextInt(testSize);
             tmp = this.trainingAndTestSet[0].get(n1);
@@ -154,7 +154,25 @@ public class MultiLayerPerceptronNet extends MultiLayerPerceptron {
         }
     }
     
-    public int[] getClassOutput() {
+    public int[] getClassOutputTest() {
+        Integer index;
+        int size = trainingAndTestSet[1].getRows().get(0).getDesiredOutput().length;
+        int result[] = new int[size];
+        for(DataSetRow dataRow : trainingAndTestSet[1].getRows()) {
+            this.setInput(dataRow.getInput());
+            this.calculate();
+            double[ ] networkOutput = this.getOutput();
+            ArrayList<Double> output = new ArrayList<Double>();
+            for(double i:networkOutput){
+                output.add(i);
+            }
+            index = output.indexOf(Collections.max(output));
+            result[index]++;
+        }
+        return result;
+    }
+    
+    public int[] getClassOutputTrain() {
         Integer index;
         int size = trainingAndTestSet[0].getRows().get(0).getDesiredOutput().length;
         int result[] = new int[size];
@@ -172,7 +190,22 @@ public class MultiLayerPerceptronNet extends MultiLayerPerceptron {
         return result;
     }
     
-    public int[] getClassDesireOutput() {
+    public int[] getClassDesireOutputTest() {
+        Integer index;
+        int size = trainingAndTestSet[1].getRows().get(0).getDesiredOutput().length;
+        int result[] = new int[size];
+        for(DataSetRow dataRow : trainingAndTestSet[1].getRows()) {
+            double[] networkOutput = dataRow.getDesiredOutput();
+            for(int i = 0; size > i; i++) {
+                if(networkOutput[i] == 1.0) {
+                    result[i]++;
+                }
+            }
+        }
+        return result;
+    }
+    
+    public int[] getClassDesireOutputTrain() {
         Integer index;
         int size = trainingAndTestSet[0].getRows().get(0).getDesiredOutput().length;
         int result[] = new int[size];

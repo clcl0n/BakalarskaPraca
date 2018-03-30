@@ -40,6 +40,10 @@ public class ConfusionMatrix extends JFrame {
             return String.valueOf(results[numClass]);
         }
         
+//        public double getSumGood() {
+//             
+//        }
+        
         private void calculate() {
             int dimension = this.outClass + 1;
             resultTop = new double[dimension][dimension];
@@ -78,7 +82,7 @@ public class ConfusionMatrix extends JFrame {
                     }
                 }
             }
-            
+            System.out.println(resultTop[dimension-1][dimension-1]);
             double[] sumRowV = new double[this.outClass];
             for(int r = 0; r < this.outClass; r++) {
                 for(int c = 0; c < this.outClass; c++) {
