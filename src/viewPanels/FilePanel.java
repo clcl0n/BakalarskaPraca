@@ -40,6 +40,7 @@ public class FilePanel extends JPanel {
     
     //Buttons
     BasicButton next = new BasicButton("Dalej");
+    BasicButton netFromFile = new BasicButton("Načítanie");
     
     public FilePanel(Model neuModel) {
         this.neuModel = neuModel;
@@ -77,6 +78,7 @@ public class FilePanel extends JPanel {
                                 .addComponent(breastCancer)
                                 .addGap(30, 30, 30)
                                 .addComponent(dermatology))
+                            .addComponent(netFromFile)
                             .addComponent(sepFile, javax.swing.GroupLayout.PREFERRED_SIZE, 614, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(custom))))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -98,6 +100,7 @@ public class FilePanel extends JPanel {
                     .addComponent(dermatology))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(custom)
+                .addComponent(netFromFile)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(next)
                 .addContainerGap())
@@ -109,6 +112,10 @@ public class FilePanel extends JPanel {
         buttonGroup.add(dermatology);
         buttonGroup.add(custom);
     
+    }
+    
+    public void addFromFileListener(ActionListener al) {
+        netFromFile.addActionListener(al);
     }
     
     public void addChooseFileTypeListener(ActionListener acl) {

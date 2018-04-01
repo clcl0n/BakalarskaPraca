@@ -17,10 +17,10 @@ public class SummaryPanel extends JPanel {
     private BasicButton saveNet = new BasicButton("uloženie sieťe");
     private BasicButton modelBtn = new BasicButton("Model");
     private BasicButton confusionBtn = new BasicButton("Confusion Matrix");
-    private BasicButton newStart = new BasicButton("Nové trénovanie");
-            
-    public void addNewStartListener(ActionListener acl) {
-        newStart.addActionListener(acl);
+    private BasicButton next = new BasicButton("Dalej");        
+    
+    public void addNextToSingleInputListener(ActionListener al) {
+        next.addActionListener(al);
     }
     
     public void addConfusionMatrixListener(ActionListener acl) {
@@ -53,9 +53,9 @@ public class SummaryPanel extends JPanel {
         this.add(lastTrainMSE);
         this.add(lastTestMSE);
         this.add(saveNet);
+        this.add(next);
         this.add(modelBtn);
         this.add(confusionBtn);
-        this.add(newStart);
     }
     
 }

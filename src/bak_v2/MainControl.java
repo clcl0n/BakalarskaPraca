@@ -11,6 +11,7 @@ import viewPanels.FilePanel;
 import viewPanels.NavBar;
 import viewPanels.SettingsExtendPanel;
 import viewPanels.SettingsPanel;
+import viewPanels.SingleInputPanel;
 import viewPanels.TrainingPanel;
 
 public class MainControl {
@@ -23,11 +24,13 @@ public class MainControl {
     private TrainingPanel c_trainingPanel;
     private FilePanel c_filePanel;  
     private SummaryPanel c_endTrainingPanel;
+    private SingleInputPanel c_singleInputPanel;
     
-    public MainControl(Model neuModel, AppView appView, NavBar navBar, FilePanel filePanel, SettingsPanel settingsPanel, SettingsExtendPanel settingExtendPanel, TrainingPanel trainingPanel, SummaryPanel endTrainingPanel) {
+    public MainControl(Model neuModel, AppView appView, NavBar navBar, FilePanel filePanel, SettingsPanel settingsPanel, SettingsExtendPanel settingExtendPanel, TrainingPanel trainingPanel, SummaryPanel endTrainingPanel, SingleInputPanel singleInputPanel) {
         this.c_neuModel = neuModel;
         this.c_appView = appView;
         this.c_navBar = navBar;
+        this.c_singleInputPanel = singleInputPanel;
         this.c_settingsPanel = settingsPanel;
         this.c_settingExtendPanel = settingExtendPanel;
         this.c_trainingPanel = trainingPanel;
@@ -40,14 +43,47 @@ public class MainControl {
         c_settingExtendPanel.addRandomDivDataSetListener(new DivDataSetListener());
         c_settingExtendPanel.addPackagesDivDataSetListener(new DivDataSetListener());
         c_filePanel.addChooseFileTypeListener(new ChooseFileTypeListener());
+        c_filePanel.addFromFileListener(new NetFromFileListener());
         c_endTrainingPanel.addNeuModelActionListener(new NeuModelListener());
         c_endTrainingPanel.addConfusionMatrixListener(new ConfusionMatrixListener());
         c_trainingPanel.addNextEndListener(new NextTOEndTrainingPanel());
         c_endTrainingPanel.addSaveNetListener(new SaveNet());
-        c_endTrainingPanel.addNewStartListener(new NewStartListener());
+        c_endTrainingPanel.addNextToSingleInputListener(new NextToSingleInputListener());
+        c_singleInputPanel.addCalculateResultListener(new CalculateResultListener());
+        c_singleInputPanel.addGetSingleDataPathListener(new GetSingleDataPathListener());
+        c_navBar.addResetListener(new NewStartListener());
     }
     
     //Listener declarations
+    
+    class NextToSingleInputListener implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent ae) {
+            c_appView.showSingleInputPanelFromSummary();
+        }
+        
+    }
+    
+    class NetFromFileListener implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent ae) {
+            FileDialog dialog = new FileDialog((Frame)null, "Select File to Open");
+            dialog.setMode(FileDialog.LOAD);
+            dialog.setVisible(true);
+            String directory = dialog.getDirectory();
+            String file = dialog.getFile(); 
+            if(directory != null && file != null) {
+                c_neuModel.neuralFromFile(directory + file);
+                c_appView.showSingleInputPanelFromLoad();
+            }
+            else {
+                JOptionPane.showMessageDialog(new Frame(), "Neúspešné načítanie");
+            }
+        }
+        
+    }
     
     class ConfusionMatrixListener implements ActionListener {
 
@@ -135,6 +171,33 @@ public class MainControl {
                 }
             else {
                 JOptionPane.showMessageDialog(new Frame(), "Vyber jedno");
+            }
+        }
+        
+    }
+    
+    class CalculateResultListener implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent ae) {
+            c_neuModel.fillSingleData();
+            c_neuModel.calculateSingleTest();
+            c_singleInputPanel.addData(c_neuModel.getMseSingle(), c_neuModel.getClassSingle());
+        }
+        
+    }
+    
+    class GetSingleDataPathListener implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent ae) {
+            FileDialog dialog = new FileDialog((Frame)null, "Select File to Open");
+            dialog.setMode(FileDialog.LOAD);
+            dialog.setVisible(true);
+            String directory = dialog.getDirectory();
+            String file = dialog.getFile(); 
+            if(directory != null && file != null) {
+                c_neuModel.setSingleDataPath(directory + file);
             }
         }
         
@@ -256,6 +319,8 @@ public class MainControl {
         @Override
         public void actionPerformed(ActionEvent ae) {
             c_appView.showFilePanel();
+            c_navBar.unHighlightStart();
+            c_singleInputPanel.addData(0, 0);
             c_neuModel.clear();
         }
         
