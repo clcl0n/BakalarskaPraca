@@ -318,10 +318,12 @@ public class MainControl {
 
         @Override
         public void actionPerformed(ActionEvent ae) {
-            c_appView.showFilePanel();
-            c_navBar.unHighlightStart();
-            c_singleInputPanel.addData(0, 0);
-            c_neuModel.clear();
+            if(!c_navBar.isHighlightData()) {
+                c_appView.showFilePanel();
+                c_navBar.unHighlightStart();
+                c_singleInputPanel.addData(0, 0);
+                c_neuModel.clear();   
+            }
         }
         
     }

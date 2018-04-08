@@ -1,8 +1,10 @@
 package viewPanels;
 
 import bak_v2.Model;
+import java.awt.Color;
 import java.awt.event.ActionListener;
 import javax.swing.ButtonGroup;
+import javax.swing.GroupLayout;
 import javax.swing.JPanel;
 import viewComponents.Input;
 import viewComponents.RadioBtn;
@@ -10,10 +12,15 @@ import viewComponents.Separator;
 import viewComponents.buttons.BasicButton;
 import viewComponents.labels.GroupInputLabel;
 import viewComponents.labels.InputLabel;
+import viewComponents.labels.PanelLabel;
 
 public class SettingsExtendPanel extends JPanel {
     
     private Model neuModel;
+    private GroupLayout layout;
+    
+    private PanelLabel label = new PanelLabel("Nastavenia");
+    private GroupInputLabel activation = new GroupInputLabel("Aktivacna funkcia");
     
     //Input Group label
     GroupInputLabel actFn = new GroupInputLabel("Aktivačná funkcia");
@@ -116,6 +123,44 @@ public class SettingsExtendPanel extends JPanel {
     }
     
     private void initLayout() {
+//        layout = new GroupLayout(this);
+//        this.setLayout(layout);
+//        this.setBackground(Color.WHITE);
+//        layout.setAutoCreateGaps(true);
+//        layout.setAutoCreateContainerGaps(true);
+//
+//        layout.setHorizontalGroup(layout.createSequentialGroup()
+//                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+//                    .addComponent(label)
+//                    //.addComponent(sepAct, javax.swing.GroupLayout.PREFERRED_SIZE, 614, javax.swing.GroupLayout.PREFERRED_SIZE)
+//                    .addComponent(activation)                
+//                )
+//                .addComponent(sigmoid)
+//                .addComponent(this.gaussian)
+//                .addComponent(this.tanh)
+//.addGap(this.getWidth())
+//
+//        );
+//
+//        layout.setVerticalGroup(layout.createSequentialGroup()
+//                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+//                    .addComponent(label))
+//                .addGap(20)
+//                //.addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+//                //.addComponent(sepAct, javax.swing.GroupLayout.PREFERRED_SIZE, 614, javax.swing.GroupLayout.PREFERRED_SIZE))
+//                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING).addComponent(activation))
+//                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING).addComponent(activation)
+//                    .addGroup(layout.createSequentialGroup()
+//                        .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+//                            .addComponent(sigmoid)
+//                            .addComponent(this.gaussian)
+//                            .addComponent(this.tanh))))
+//
+//
+//                
+//                
+//                
+//        );
         this.add(sigmoid);
         this.add(tanh);
         this.add(gaussian);

@@ -22,6 +22,10 @@ public class NavBar extends JPanel {
     private final NavButton singleInput = new NavButton("Test ????");
     private final ResetButton reset = new ResetButton("Reset");
     
+    public boolean isHighlightData() {
+        return data.getH();
+    }
+    
     public void unHighlightStart() {
         singleInput.unHighlight();
         summary.unHighlight();
