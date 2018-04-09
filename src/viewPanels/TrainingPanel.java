@@ -6,8 +6,8 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.ActionListener;
 import java.util.List;
+import javax.swing.BoxLayout;
 import javax.swing.GroupLayout;
-import javax.swing.GroupLayout.Alignment;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -92,18 +92,12 @@ public class TrainingPanel extends JPanel {
         JFreeChart succesChart = createChartSucces("Úspešnosť", titleX, "%");
         ChartPanel chartPanel = new ChartPanel( chart );
         ChartPanel chartPanelSucces = new ChartPanel( succesChart );
-        chartPanel.setPreferredSize( new java.awt.Dimension( 560 , 330 ) );
-        chartPanelSucces.setPreferredSize( new java.awt.Dimension( 560 , 330 ) );
-        trainLayout.setAutoCreateGaps(true);
-        trainLayout.setAutoCreateContainerGaps(true);
-        GroupLayout.SequentialGroup hGroup = trainLayout.createSequentialGroup();
-        hGroup.addGroup(trainLayout.createParallelGroup().addComponent(chartPanel).addComponent(chartPanelSucces).addComponent(next));
-        GroupLayout.SequentialGroup vGroup = trainLayout.createSequentialGroup();
-        vGroup.addGroup(trainLayout.createParallelGroup(Alignment.BASELINE).addComponent(chartPanel));
-        vGroup.addGroup(trainLayout.createParallelGroup(Alignment.BASELINE).addComponent(chartPanelSucces));
-        vGroup.addGroup(trainLayout.createParallelGroup(Alignment.BASELINE).addComponent(next));
-        trainLayout.setHorizontalGroup(hGroup);
-        trainLayout.setVerticalGroup(vGroup);
+        chartPanel.setPreferredSize( new java.awt.Dimension( 560 , 200 ) );
+        chartPanelSucces.setPreferredSize( new java.awt.Dimension( 560 , 200 ) );
+        this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+        this.add(chartPanel);
+        this.add(chartPanelSucces);
+        this.add(next); 
     }
     
     public TrainingPanel(Model model, String graphTitle, String titleX, String titleY, XYSeriesCollection seriesCollection, XYSeriesCollection seriesCollectionSucces) {
@@ -113,10 +107,5 @@ public class TrainingPanel extends JPanel {
         this.setBackground(Color.WHITE);    
         trainLayout = new GroupLayout(this);
         initLayout(graphTitle, titleX, titleY);
-//        this.add(chartPanel);
-//        this.add(chartPanelSucces);
-//        this.add(iteration);
-//        this.add(errTrain);
-//        this.add(next);
     }
 }

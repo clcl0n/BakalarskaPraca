@@ -28,7 +28,7 @@ public class FilePanel extends JPanel {
     
     //Group separatos
     Separator sepFile = new Separator();    
-    Separator sepFromFile = new Separator();
+    //Separator sepFromFile = new Separator();
     
     //Radio buttons
     RadioBtn parkinson = new RadioBtn("Parkinson");
@@ -80,7 +80,7 @@ public class FilePanel extends JPanel {
                                 .addComponent(breastCancer)
                                 .addGap(30, 30, 30)
                                 .addComponent(dermatology))
-                            .addComponent(sepFromFile, javax.swing.GroupLayout.PREFERRED_SIZE, 614, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            //.addComponent(sepFromFile, javax.swing.GroupLayout.PREFERRED_SIZE, 614, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(fromFile)
                             .addComponent(netFromFile)
                             .addComponent(sepFile)
@@ -107,7 +107,7 @@ public class FilePanel extends JPanel {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(custom)
                 .addGap(15, 15, 15)
-                .addComponent(sepFromFile)
+                //.addComponent(sepFromFile)
                 .addComponent(fromFile)
                 .addGap(15, 15, 15)
                 .addComponent(netFromFile)

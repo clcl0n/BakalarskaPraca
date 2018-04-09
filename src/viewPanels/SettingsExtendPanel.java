@@ -1,7 +1,6 @@
 package viewPanels;
 
 import bak_v2.Model;
-import java.awt.Color;
 import java.awt.event.ActionListener;
 import javax.swing.ButtonGroup;
 import javax.swing.GroupLayout;
@@ -11,41 +10,41 @@ import viewComponents.RadioBtn;
 import viewComponents.Separator;
 import viewComponents.buttons.BasicButton;
 import viewComponents.labels.GroupInputLabel;
-import viewComponents.labels.InputLabel;
 import viewComponents.labels.PanelLabel;
 
 public class SettingsExtendPanel extends JPanel {
     
-    private Model neuModel;
-    private GroupLayout layout;
-    
-    private PanelLabel label = new PanelLabel("Nastavenia");
-    private GroupInputLabel activation = new GroupInputLabel("Aktivacna funkcia");
+    private final Model neuModel;
+    private final GroupLayout extendSettingsLayout;
+        
+    private final PanelLabel label = new PanelLabel("Nastavenia");
+    private final GroupInputLabel activation = new GroupInputLabel("Aktivacna funkcia");
     
     //Input Group label
-    GroupInputLabel actFn = new GroupInputLabel("Aktivačná funkcia");
-    
+    private final GroupInputLabel actFn = new GroupInputLabel("Aktivačná funkcia");
+    private final GroupInputLabel dataDiv = new GroupInputLabel("Rozdelenie dát");
+
     //Group separatos
-    Separator sepAct = new Separator();
+    private final Separator sepAct = new Separator();
     
     //Radio buttons
-    RadioBtn sigmoid = new RadioBtn("Sigmoida");
-    RadioBtn tanh = new RadioBtn("Tanh");
-    RadioBtn gaussian = new RadioBtn("Gaussian");
-    RadioBtn random = new RadioBtn("Náhodné rozdelenie");
-    RadioBtn packages = new RadioBtn("Balíky");
+    private final RadioBtn sigmoid = new RadioBtn("Sigmoida");
+    private final RadioBtn tanh = new RadioBtn("Tanh");
+    private final RadioBtn gaussian = new RadioBtn("Gaussian");
+    private final RadioBtn random = new RadioBtn("Náhodné rozdelenie");
+    private final RadioBtn packages = new RadioBtn("Balíky");
     
     //Radio button group
-    ButtonGroup activationFn = new ButtonGroup();    
-    ButtonGroup dataSplit = new ButtonGroup();
+    private final ButtonGroup activationFn = new ButtonGroup();    
+    private final ButtonGroup dataSplit = new ButtonGroup();
     
     //Input fields
-    private Input train = new Input();
-    private Input test = new Input();
-    private Input iPackages = new Input();
+    private final Input train = new Input();
+    private final Input test = new Input();
+    private final Input iPackages = new Input();
     
     //Buttons
-    BasicButton trainBtn = new BasicButton("Trénovanie");
+    private final BasicButton trainBtn = new BasicButton("Trénovanie");
     
     public void addRandomDivDataSetListener(ActionListener al) {
         random.addActionListener(al);
@@ -123,44 +122,6 @@ public class SettingsExtendPanel extends JPanel {
     }
     
     private void initLayout() {
-//        layout = new GroupLayout(this);
-//        this.setLayout(layout);
-//        this.setBackground(Color.WHITE);
-//        layout.setAutoCreateGaps(true);
-//        layout.setAutoCreateContainerGaps(true);
-//
-//        layout.setHorizontalGroup(layout.createSequentialGroup()
-//                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-//                    .addComponent(label)
-//                    //.addComponent(sepAct, javax.swing.GroupLayout.PREFERRED_SIZE, 614, javax.swing.GroupLayout.PREFERRED_SIZE)
-//                    .addComponent(activation)                
-//                )
-//                .addComponent(sigmoid)
-//                .addComponent(this.gaussian)
-//                .addComponent(this.tanh)
-//.addGap(this.getWidth())
-//
-//        );
-//
-//        layout.setVerticalGroup(layout.createSequentialGroup()
-//                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-//                    .addComponent(label))
-//                .addGap(20)
-//                //.addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-//                //.addComponent(sepAct, javax.swing.GroupLayout.PREFERRED_SIZE, 614, javax.swing.GroupLayout.PREFERRED_SIZE))
-//                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING).addComponent(activation))
-//                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING).addComponent(activation)
-//                    .addGroup(layout.createSequentialGroup()
-//                        .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-//                            .addComponent(sigmoid)
-//                            .addComponent(this.gaussian)
-//                            .addComponent(this.tanh))))
-//
-//
-//                
-//                
-//                
-//        );
         this.add(sigmoid);
         this.add(tanh);
         this.add(gaussian);
@@ -177,7 +138,6 @@ public class SettingsExtendPanel extends JPanel {
         
         dataSplit.add(random);
         dataSplit.add(packages);
-        
     }
     
     public void addTrainingActionListener(ActionListener acl) {
@@ -186,6 +146,7 @@ public class SettingsExtendPanel extends JPanel {
     
     public SettingsExtendPanel(Model neuModel) {
         this.neuModel = neuModel;
+        this.extendSettingsLayout = new GroupLayout(this);;
         initLayout();
         setDefValue();
     }
