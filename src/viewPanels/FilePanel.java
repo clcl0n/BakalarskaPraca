@@ -23,10 +23,12 @@ public class FilePanel extends JPanel {
     PanelLabel label = new PanelLabel("Dáta");
     
     //Input Group label
-    GroupInputLabel file = new GroupInputLabel("Vybranie suboru");
-
+    GroupInputLabel file = new GroupInputLabel("Vybranie suboru dát");
+    GroupInputLabel fromFile = new GroupInputLabel("Importovanie natrénovanej siete");
+    
     //Group separatos
     Separator sepFile = new Separator();    
+    //Separator sepFromFile = new Separator();
     
     //Radio buttons
     RadioBtn parkinson = new RadioBtn("Parkinson");
@@ -40,6 +42,7 @@ public class FilePanel extends JPanel {
     
     //Buttons
     BasicButton next = new BasicButton("Dalej");
+    BasicButton netFromFile = new BasicButton("Načítanie");
     
     public FilePanel(Model neuModel) {
         this.neuModel = neuModel;
@@ -77,7 +80,10 @@ public class FilePanel extends JPanel {
                                 .addComponent(breastCancer)
                                 .addGap(30, 30, 30)
                                 .addComponent(dermatology))
-                            .addComponent(sepFile, javax.swing.GroupLayout.PREFERRED_SIZE, 614, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            //.addComponent(sepFromFile, javax.swing.GroupLayout.PREFERRED_SIZE, 614, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(fromFile)
+                            .addComponent(netFromFile)
+                            .addComponent(sepFile)
                             .addComponent(custom))))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -95,9 +101,16 @@ public class FilePanel extends JPanel {
                     .addComponent(arrhythmia)
                     .addComponent(parkinson)
                     .addComponent(breastCancer)
-                    .addComponent(dermatology))
+                    .addComponent(dermatology)
+                
+                )
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(custom)
+                .addGap(15, 15, 15)
+                //.addComponent(sepFromFile)
+                .addComponent(fromFile)
+                .addGap(15, 15, 15)
+                .addComponent(netFromFile)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(next)
                 .addContainerGap())
@@ -109,6 +122,10 @@ public class FilePanel extends JPanel {
         buttonGroup.add(dermatology);
         buttonGroup.add(custom);
     
+    }
+    
+    public void addFromFileListener(ActionListener al) {
+        netFromFile.addActionListener(al);
     }
     
     public void addChooseFileTypeListener(ActionListener acl) {

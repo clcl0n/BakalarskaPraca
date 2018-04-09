@@ -3,7 +3,9 @@ package bak_v2;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
 import java.util.Random;
+import org.neuroph.core.NeuralNetwork;
 import org.neuroph.core.data.DataSet;
 import org.neuroph.core.data.DataSetRow;
 import org.neuroph.core.learning.error.MeanSquaredError;
@@ -89,6 +91,29 @@ public class MultiLayerPerceptronNet extends MultiLayerPerceptron {
             this.trainingAndTestSet[0].set(n1, this.trainingAndTestSet[1].get(n2));
             this.trainingAndTestSet[1].set(n2, tmp);
         }
+    }
+    
+    public double[] getMSE(DataSetRow in) {
+        
+        double[] result = new double[2];
+        MeanSquaredError mse = new MeanSquaredError();
+        this.setInput(in.getInput());
+        this.calculate();
+        double[ ] networkOutput = this.getOutput();
+        mse.addPatternError(networkOutput, in.getDesiredOutput());
+        result[0] = mse.getTotalError();
+        result[1] = getIndexOfLargest(this.getOutput());
+        return result;
+    }
+    
+    public int getIndexOfLargest( double[] array ) {
+        if ( array == null || array.length == 0 ) return -1; // null or empty
+        int largest = 0;
+        for ( int i = 1; i < array.length; i++ )
+        {
+            if ( array[i] > array[largest] ) largest = i;
+        }
+        return largest + 1; // position of the first largest found
     }
     
     /**

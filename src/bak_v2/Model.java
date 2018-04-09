@@ -1,5 +1,6 @@
 package bak_v2;
 
+import java.util.ArrayList;
 import java.util.List;
 import neuComponents.ArrhythmiaDat;
 import neuComponents.BreastCancerDat;
@@ -7,10 +8,13 @@ import neuComponents.CustomData;
 import neuComponents.CustomTrainData;
 import neuComponents.DermatologyDat;
 import neuComponents.ParkinsonDat;
+import neuComponents.SingleInputDat;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
+import org.neuroph.core.NeuralNetwork;
 import org.neuroph.core.Neuron;
 import org.neuroph.core.data.DataSet;
+import org.neuroph.nnet.MultiLayerPerceptron;
 import org.neuroph.util.TransferFunctionType;
 import org.neuroph.util.data.norm.MaxMinNormalizer;
 
@@ -37,7 +41,14 @@ public class Model {
     
     private boolean isParkinson, isArrhythmia, isBreastCancer, isDermatology, isCustom;
     
+    private int classSingle = 0;
+    private double mseSingle = 0.0;
+    
     private String fileDataPath;
+    private String singleDataPath;
+    
+    private ArrayList<double[]> singleDesiredOutput = new ArrayList<double[]>();
+    private ArrayList<double[]> singleInput = new ArrayList<double[]>(); 
     
     private double lastSuccess, lastTestMSE, lastTrainMSE; 
     
@@ -47,14 +58,46 @@ public class Model {
     private DermatologyDat dermatologyData;
     private BreastCancerDat breastCancerData;
     private CustomTrainData customData;
+    private SingleInputDat singleInputDat;
     
+    private DataSet single;
     private DataSet trainingSet;
     private MultiLayerPerceptronNet net;
     
     private int testDiv = 20, trainDiv = 80;
     private int packages = 0;
 
+    public void fillSingleData() {
+        singleInputDat = new SingleInputDat(singleDataPath, this.inNeu, this.outNeu);
+        single = singleInputDat.getTrainingSet();
+//        MaxMinNormalizer norm = new MaxMinNormalizer();
+//        norm.normalize(single);     
+    }
+    
+    public void calculateSingleTest() {
+        double[] result = net.getMSE(single.getRowAt(0));
+        this.mseSingle = result[0];
+        this.classSingle = (int)result[1];
+    }
+
+    public int getClassSingle() {
+        return classSingle;
+    }
+
+    public void setClassSingle(int classSingle) {
+        this.classSingle = classSingle;
+    }
+
+    public double getMseSingle() {
+        return mseSingle;
+    }
+
+    public void setMseSingle(double mseSingle) {
+        this.mseSingle = mseSingle;
+    }
+    
     public void clear() {
+        singleDataPath = null;
         dataSeries.clear();
         dataSeriesSuccess.clear();
         testSeries.clear();
@@ -63,6 +106,8 @@ public class Model {
         trainDiv = 80;
         trainingSet = null;
         net = null;
+        classSingle = 0;
+        mseSingle = 0.0;
         parkinsonData = null;
         arrhytmiaData = null;
         dermatologyData = null;
@@ -77,6 +122,7 @@ public class Model {
         isBreastCancer = false; 
         isDermatology = false; 
         isCustom = false;
+        singleInputDat = null;
         rate = 0.1; 
         momentum = 0.8; 
         maxErr = 0.02;
@@ -87,6 +133,20 @@ public class Model {
         errTrain = 0.0;
         iteration = 0;
         end = false;
+    }
+    
+    public void neuralFromFile(String path) {
+       net = (MultiLayerPerceptronNet) MultiLayerPerceptron.load(path);
+       this.inNeu = net.getInputsCount();
+       this.outNeu = net.getOutputsCount();
+    }
+
+    public String getSingleDataPath() {
+        return singleDataPath;
+    }
+
+    public void setSingleDataPath(String singleDataPath) {
+        this.singleDataPath = singleDataPath;
     }
     
     public void saveNet() {

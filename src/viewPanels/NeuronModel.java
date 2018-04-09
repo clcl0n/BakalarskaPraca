@@ -27,7 +27,7 @@ public class NeuronModel extends JPanel {
         int yDistance = 0;
         int inWidth = margin + (inputN * radius) + (inputN * margin);
         int hidWidth = margin + (hiddenN * radius) + (hiddenN * margin);
-        int outWidth = margin + (outN * radius) + (outN * margin);
+        int outWidth = margin + (hiddenN * radius) + (outN * margin);
         int maxWidth;
         int fristTop, top;
         fristTop = 20;
@@ -54,6 +54,7 @@ public class NeuronModel extends JPanel {
         yDistance = margin + fristTop;
         xDistance = margin;
         for(int i = 0; i < inputN; i++) {
+            g2.drawString("x" + i, xDistance + radius/2 - 7, yDistance + radius/2 + 3);
             g2.drawOval(xDistance, yDistance, radius, radius);
             xDistance += (margin + radius);
         }
@@ -65,9 +66,10 @@ public class NeuronModel extends JPanel {
             xDistance += (margin + radius);
         } 
         
-        int yDistance3 = (margin + (6 * radius) + top);
+        int yDistance3 = yDistance2 * 2;
         xDistance = margin;
         for(int i = 0; i < outN; i++) {
+            g2.drawString("y" + i, xDistance + radius/2 - 7, yDistance3 + radius/2 + 3);
             g2.drawOval(xDistance, yDistance3, radius, radius);
             xDistance += (margin + radius);
         }        
@@ -169,6 +171,7 @@ public class NeuronModel extends JPanel {
     }
     
     public NeuronModel(int inputN, int hiddenN, int outN, List<Neuron> inNeurons, List<Neuron> outNeurons) {
+        this.setBackground(Color.WHITE);
         this.inputN = inputN;
         this.hiddenN = hiddenN;
         this.outN = outN;
