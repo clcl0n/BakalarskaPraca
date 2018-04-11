@@ -3,7 +3,6 @@ package viewPanels;
 import bak_v2.Model;
 import java.awt.Color;
 import java.awt.event.ActionListener;
-import java.text.DecimalFormat;
 import javax.swing.GroupLayout;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -14,48 +13,76 @@ import viewComponents.labels.PanelLabel;
 
 public class SummaryPanel extends JPanel {
     
-    private Model neuModel;
-    
+    //Model & layout
+    private final Model neuModel;
     private final GroupLayout summaryLayout = new GroupLayout(this);
 
+    //Panel name
     private final PanelLabel label = new PanelLabel("Výsledky");    
-    
+
+    //Input groups labels
     private final GroupInputLabel success = new GroupInputLabel("Úspešnosť:");
     private final GroupInputLabel trainMse = new GroupInputLabel("Chyba trénovacích dát:");
     private final GroupInputLabel testMse = new GroupInputLabel("Chyba testovacích dát:");
     
-    
+    //Data labels
     private JLabel lastSuccess = new JLabel();
     private JLabel lastTrainMSE = new JLabel();
     private JLabel lastTestMSE = new JLabel();
     
+    //Separator
     private final Separator sep = new Separator();    
     
+    //All buttons
     private BasicButton saveNet = new BasicButton("uloženie sieťe");
     private BasicButton modelBtn = new BasicButton("Model");
     private BasicButton confusionBtn = new BasicButton("Confusion Matrix");
     private BasicButton next = new BasicButton("Dalej");        
     
+    /**
+     * Add ActionListener to next button
+     * 
+     * @param al ActionListener
+     */
     public void addNextToSingleInputListener(ActionListener al) {
         next.addActionListener(al);
     }
     
-    public void addConfusionMatrixListener(ActionListener acl) {
-        confusionBtn.addActionListener(acl);
+    /**
+     * Add ActionListener to Confusion Matrix button
+     * 
+     * @param al ActionListener
+     */
+    public void addConfusionMatrixListener(ActionListener al) {
+        confusionBtn.addActionListener(al);
     }
     
-    public void addNeuModelActionListener(ActionListener acl) {
-        modelBtn.addActionListener(acl);
+    /**
+     * Add ActionListener to Neuron model button
+     * 
+     * @param al ActionListener
+     */    
+    public void addNeuModelActionListener(ActionListener al) {
+        modelBtn.addActionListener(al);
     }    
     
+    /**
+     * Set text to Success label from Model
+     */
     public void setLastSuccess() {
         this.lastSuccess.setText(String.format("%.2f",neuModel.getLastSuccess()) + " %");
     }
     
+    /**
+     * Set text to TrainMSE label form Model
+     */
     public void setLastTrainMSE() {
         this.lastTrainMSE.setText(String.format("%.2f",neuModel.getLastTrainMSE()));
     }
     
+    /**
+     * Set text to TestMSE label from Model
+     */
     public void setLastTestMSE() {
         this.lastTestMSE.setText(String.format("%.2f",neuModel.getLastTestMSE()));
     }
