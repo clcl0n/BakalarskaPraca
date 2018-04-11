@@ -15,11 +15,12 @@ import viewComponents.labels.PanelLabel;
 
 public class SettingsExtendPanel extends JPanel {
     
+    //Model & Layout
     private final Model neuModel;
-    private final GroupLayout extendSettingsLayout;
+    private final GroupLayout extendSettingsLayout = new GroupLayout(this);
         
+    //Panel name
     private final PanelLabel label = new PanelLabel("Nastavenia");
-    private final GroupInputLabel activation = new GroupInputLabel("Aktivacna funkcia");
     
     //Input Group label
     private final GroupInputLabel actFn = new GroupInputLabel("Aktivačná funkcia");
@@ -47,81 +48,9 @@ public class SettingsExtendPanel extends JPanel {
     //Buttons
     private final BasicButton trainBtn = new BasicButton("Trénovanie");
     
-    public void addRandomDivDataSetListener(ActionListener al) {
-        random.addActionListener(al);
-    }
-    
-    public void addPackagesDivDataSetListener(ActionListener al) {
-        packages.addActionListener(al);
-    }
-    
-    private void disableRandom() {
-        train.setEnabled(false);
-        test.setEnabled(false);
-    }
-    
-    public void enablePackages() {
-        iPackages.setEnabled(true);
-        disableRandom();
-    }
-    
-    private void disablePackages() {
-        iPackages.setEnabled(false);
-    }
-    
-    public void enableRandom() {
-        train.setEnabled(true);
-        test.setEnabled(true);
-        disablePackages();
-    }
-    
-    public String getPackages() {
-        return this.packages.getText();
-    }
-    
-    private void setDefValue() {
-        enableRandom();
-        sigmoid.setSelected(true);
-        random.setSelected(true);
-        neuModel.setFnSigmoid();
-    }
-    
-    public boolean isSelectedPackages() {
-        return packages.isSelected();
-    }
-    
-    public boolean isSelectedRandom() {
-        return random.isSelected();
-    }
-    
-    public boolean isSelectedSigmoid() {
-        return sigmoid.isSelected();
-    }
-    
-    public boolean isSelectedTanh() {
-        return tanh.isSelected();
-    }    
-    
-    public boolean isSelectedGaussian() {
-        return gaussian.isSelected();
-    }  
-    
-    public void setTrainDiv() {
-        this.train.setText(String.valueOf(neuModel.getTrainDiv()));
-    } 
-    
-    public void setTestDIv() {
-        this.test.setText(String.valueOf(neuModel.getTestDiv()));
-    }
-    
-    public String getTestDiv() {
-        return this.test.getText();
-    }
-    
-    public String getTrainDiv() {
-        return this.train.getText();
-    }
-    
+    /**
+     * Initialize Layout
+     */
     private void initLayout() {
         this.setBackground(Color.WHITE);
         this.setLayout(extendSettingsLayout);
@@ -172,31 +101,120 @@ public class SettingsExtendPanel extends JPanel {
                 .addComponent(trainBtn)
                 .addContainerGap())
         );        
-//        this.add(sigmoid);
-//        this.add(tanh);
-//        this.add(gaussian);
-//        this.add(trainBtn);
-//        this.add(train);
-//        this.add(test);
-//        this.add(random);
-//        this.add(packages);
-//        this.add(iPackages);
         
+        //RadioButton groups
         activationFn.add(sigmoid);
         activationFn.add(tanh);
         activationFn.add(gaussian);
         
         dataSplit.add(random);
         dataSplit.add(packages);
+    }    
+    
+    /**
+     * Add ActionListener to RandomDivData radioButton
+     * 
+     * @param al ActionListener
+     */
+    public void addRandomDivDataSetListener(ActionListener al) {
+        random.addActionListener(al);
     }
     
-    public void addTrainingActionListener(ActionListener acl) {
-        trainBtn.addActionListener(acl);
+    /**
+     * Add ActionListener to PackagesDivData radioButton
+     * 
+     * @param al ActionListener
+     */    
+    public void addPackagesDivDataSetListener(ActionListener al) {
+        packages.addActionListener(al);
+    }
+    
+    /**
+     * Add ActionListener to Training button
+     * 
+     * @param al ActionListener 
+     */
+    public void addTrainingActionListener(ActionListener al) {
+        trainBtn.addActionListener(al);
+    }    
+    
+    //Enable & Disable
+    
+    private void disableRandom() {
+        train.setEnabled(false);
+        test.setEnabled(false);
+    }
+    
+    public void enablePackages() {
+        iPackages.setEnabled(true);
+        disableRandom();
+    }
+    
+    private void disablePackages() {
+        iPackages.setEnabled(false);
+    }
+    
+    public void enableRandom() {
+        train.setEnabled(true);
+        test.setEnabled(true);
+        disablePackages();
+    }
+    
+    //Is functions
+    
+    public boolean isSelectedPackages() {
+        return packages.isSelected();
+    }
+    
+    public boolean isSelectedRandom() {
+        return random.isSelected();
+    }
+    
+    public boolean isSelectedSigmoid() {
+        return sigmoid.isSelected();
+    }
+    
+    public boolean isSelectedTanh() {
+        return tanh.isSelected();
+    }    
+    
+    public boolean isSelectedGaussian() {
+        return gaussian.isSelected();
+    }    
+    
+    //Geters
+    
+    public String getPackages() {
+        return this.packages.getText();
+    }
+    
+    public String getTestDiv() {
+        return this.test.getText();
+    }
+    
+    public String getTrainDiv() {
+        return this.train.getText();
+    }    
+    
+    //Setters
+    
+    private void setDefValue() {
+        enableRandom();
+        sigmoid.setSelected(true);
+        random.setSelected(true);
+        neuModel.setFnSigmoid();
+    }
+    
+    public void setTrainDiv() {
+        this.train.setText(String.valueOf(neuModel.getTrainDiv()));
+    } 
+    
+    public void setTestDIv() {
+        this.test.setText(String.valueOf(neuModel.getTestDiv()));
     }
     
     public SettingsExtendPanel(Model neuModel) {
         this.neuModel = neuModel;
-        this.extendSettingsLayout = new GroupLayout(this);;
         initLayout();
         setDefValue();
     }

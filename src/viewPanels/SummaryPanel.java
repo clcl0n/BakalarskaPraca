@@ -20,7 +20,7 @@ public class SummaryPanel extends JPanel {
     //Panel name
     private final PanelLabel label = new PanelLabel("Výsledky");    
 
-    //Input groups labels
+    //Input group labels
     private final GroupInputLabel success = new GroupInputLabel("Úspešnosť:");
     private final GroupInputLabel trainMse = new GroupInputLabel("Chyba trénovacích dát:");
     private final GroupInputLabel testMse = new GroupInputLabel("Chyba testovacích dát:");
