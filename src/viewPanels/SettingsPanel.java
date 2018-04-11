@@ -16,54 +16,67 @@ import viewComponents.labels.PanelLabel;
 
 public class SettingsPanel extends JPanel {
     
-    private Model neuModel;
-    
+    //Model & Layout
+    private final Model neuModel;
     private final GroupLayout settingsLayout;
     
-    //Panel label
-    PanelLabel label = new PanelLabel("Nastavenia");
+    //Panel name
+    private final PanelLabel label = new PanelLabel("Nastavenia");
     
     //Input Group label
-    GroupInputLabel file = new GroupInputLabel("Vyber súbor");
-    GroupInputLabel neuNet = new GroupInputLabel("Neurónová sieť");
-    GroupInputLabel train = new GroupInputLabel("Trénovanie");
+    private final GroupInputLabel file = new GroupInputLabel("Vyber súbor");
+    private final GroupInputLabel neuNet = new GroupInputLabel("Neurónová sieť");
+    private final GroupInputLabel train = new GroupInputLabel("Trénovanie");
     
     //Input labes
-    InputLabel inNeu = new InputLabel("Vstupné neuróny");
-    InputLabel hidNeu = new InputLabel("Skryté neuróny");
-    InputLabel outNeu = new InputLabel("Výstupné neuróny");
+    private final InputLabel inNeu = new InputLabel("Vstupné neuróny");
+    private final InputLabel hidNeu = new InputLabel("Skryté neuróny");
+    private final InputLabel outNeu = new InputLabel("Výstupné neuróny");
     
-    InputLabel numIt = new InputLabel("Počet iterácii");
-    InputLabel rate = new InputLabel("Rate");
-    InputLabel momentum = new InputLabel("Momentum");    
-    InputLabel maxErr = new InputLabel("max Err");
+    private final InputLabel numIt = new InputLabel("Počet iterácii");
+    private final InputLabel rate = new InputLabel("Rate");
+    private final InputLabel momentum = new InputLabel("Momentum");    
+    private final InputLabel maxErr = new InputLabel("max Err");
     
     //Group separatos
-    Separator sepFile = new Separator();
-    Separator sepNeu = new Separator();    
-    Separator sepTrain = new Separator();
+    private final Separator sepFile = new Separator();
+    private final Separator sepNeu = new Separator();    
+    private final Separator sepTrain = new Separator();
     
     //Input fields
-    private Input inInNeu = new Input();
-    private Input inHidNeu = new Input();
-    private Input inOutNeu = new Input();
-    private Input inNumIt = new Input();
-    private Input inRate = new Input();
-    private Input inMomentum = new Input();
-    private Input inMaxErr = new Input();
+    private final Input inInNeu = new Input();
+    private final Input inHidNeu = new Input();
+    private final Input inOutNeu = new Input();
+    private final Input inNumIt = new Input();
+    private final Input inRate = new Input();
+    private final Input inMomentum = new Input();
+    private final Input inMaxErr = new Input();
     
     //Buttons
-    BasicButton next = new BasicButton("Dalej");
-    FileGetButton getFile = new FileGetButton();
+    private final BasicButton next = new BasicButton("Dalej");
+    private final FileGetButton getFile = new FileGetButton();
     
-    public void addFilePathListener(ActionListener acl) {
-        getFile.addActionListener(acl);
+    /**
+     * Add ActionListener to FilePath button
+     * 
+     * @param al ActionListener
+     */
+    public void addFilePathListener(ActionListener al) {
+        getFile.addActionListener(al);
     }
     
-    public void addToExtendSettingsActionListener(ActionListener acl) {
-        next.addActionListener(acl);
+    /**
+     * Add ActionListener to next button
+     * 
+     * @param al ActionListener
+     */
+    public void addToExtendSettingsActionListener(ActionListener al) {
+        next.addActionListener(al);
     }
     
+    /**
+     * Initialize layout
+     */
     private void initLayout() {
         settingsLayout.setHorizontalGroup(
             settingsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -167,42 +180,7 @@ public class SettingsPanel extends JPanel {
         );
     }
     
-    public SettingsPanel(Model neuModel) {
-        this.neuModel = neuModel;
-        this.setBackground(new Color(255, 255, 255));
-        this.setSize(new Dimension(800, 400));
-        this.settingsLayout = new GroupLayout(this);
-        this.initLayout();
-        this.setLayout(settingsLayout);
-    }
-    
-    public void setInNeu(int num) {
-        inInNeu.setText(String.valueOf(num));
-    }
-    
-    public void setOutNeu(int num) {
-        inOutNeu.setText(String.valueOf(num));
-    }
-    
-    public void setHidNeu() {
-        inHidNeu.setText(String.valueOf(neuModel.getHidNeu()));
-    }
-    
-    public void setRate() {
-        inRate.setText(String.valueOf(neuModel.getRate()));
-    }
-    
-    public void setMaxIt() {
-        inNumIt.setText(String.valueOf(neuModel.getMaxIt()));
-    }
-    
-    public void setMomentum() {
-        inMomentum.setText(String.valueOf(neuModel.getMomentum()));
-    }
-    
-    public void setMaxErr() {
-        inMaxErr.setText(String.valueOf(neuModel.getMaxErr()));
-    }
+    //Enable & Disable
     
     public void enableGetFile() {
         getFile.setEnabled(true);
@@ -227,6 +205,8 @@ public class SettingsPanel extends JPanel {
     public void disableOutNeu() {
         inOutNeu.setEditable(false);
     }
+    
+    //Geters
     
     public String getInNeu() {
         return this.inInNeu.getText();
@@ -254,6 +234,44 @@ public class SettingsPanel extends JPanel {
 
     public String getMaxErr() {
         return this.inMaxErr.getText();
+    }   
+   
+    //Seters
+    
+    public void setInNeu(int num) {
+        inInNeu.setText(String.valueOf(num));
+    }
+    
+    public void setOutNeu(int num) {
+        inOutNeu.setText(String.valueOf(num));
+    }
+    
+    public void setHidNeu() {
+        inHidNeu.setText(String.valueOf(neuModel.getHidNeu()));
+    }
+    
+    public void setRate() {
+        inRate.setText(String.valueOf(neuModel.getRate()));
+    }
+    
+    public void setMaxIt() {
+        inNumIt.setText(String.valueOf(neuModel.getMaxIt()));
+    }
+    
+    public void setMomentum() {
+        inMomentum.setText(String.valueOf(neuModel.getMomentum()));
+    }
+    
+    public void setMaxErr() {
+        inMaxErr.setText(String.valueOf(neuModel.getMaxErr()));
     }    
     
+    public SettingsPanel(Model neuModel) {
+        this.neuModel = neuModel;
+        this.setBackground(new Color(255, 255, 255));
+        this.setSize(new Dimension(800, 400));
+        this.settingsLayout = new GroupLayout(this);
+        this.initLayout();
+        this.setLayout(settingsLayout);
+    } 
 }
