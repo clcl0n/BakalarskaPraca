@@ -146,6 +146,10 @@ public class SummaryPanel extends JPanel {
         );
     }
     
+    /**
+     * 
+     * @param neuModel 
+     */
     public SummaryPanel(Model neuModel) {
         this.neuModel = neuModel;
         initLayout();

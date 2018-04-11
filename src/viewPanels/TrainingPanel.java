@@ -22,36 +22,66 @@ import viewComponents.buttons.BasicButton;
 
 public class TrainingPanel extends JPanel {
     
-    private Model model;
+    //Model & Layout
+    private final Model model;
+    private final GroupLayout trainLayout = new GroupLayout(this);
+
+    //Frames
     private NeuronModel neuModel;
     private ConfusionMatrix confusionMatrix;
     
-    private final GroupLayout trainLayout;
+    //Data labels
+    private final JLabel iteration = new JLabel();
+    private final JLabel errTrain = new JLabel();
     
-    private BasicButton next = new BasicButton("Dalej");
+    //Buttons
+    private final BasicButton next = new BasicButton("Dalej");
     
-    private XYSeriesCollection seriesCollection;
-    private XYSeriesCollection seriesCollectionSucces;
-
-    private JLabel iteration = new JLabel();
-    private JLabel errTrain = new JLabel();
+    //SeriesCollections for graphs
+    private final XYSeriesCollection seriesCollection;
+    private final XYSeriesCollection seriesCollectionSucces;
     
+    /**
+     * Set text to Err Train Label
+     * 
+     * @param text text to set
+     */
     public void errTrainLabel(String text) {
         this.errTrain.setText(text);
     }
     
+    /**
+     * Set text to Iteration Label
+     * 
+     * @param text text to set
+     */
     public void iterationLabel(String text) {
         this.iteration.setText(text);
     }
     
+    /**
+     * Create Confusion Matrix Frame
+     * 
+     * @param records number of records
+     * @param results array of results
+     * @param desireResult array of desire result
+     */
     public void ConfusionMatrix(int records, int results[], int[] desireResult) {
         confusionMatrix = new ConfusionMatrix(records, results, desireResult);
         confusionMatrix.setVisible(true);
     }
     
+    /**
+     * Create Neuron Model Frame
+     * 
+     * @param inputN number of input Neurons
+     * @param hiddenN number of hidden Neurons
+     * @param outN number of output Neurons
+     * @param inNeurons List of input Neurons
+     * @param outNeurons  List of output Neurons
+     */
     public void showModel(int inputN, int hiddenN, int outN, List<Neuron> inNeurons, List<Neuron> outNeurons) {
         JFrame frame = new JFrame("FrameDemo");
-        //frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         neuModel = new NeuronModel(inputN, hiddenN, outN, inNeurons, outNeurons);
         neuModel.setPreferredSize(new Dimension(400, 500));
         JScrollPane scroll = new JScrollPane(neuModel);
@@ -61,11 +91,24 @@ public class TrainingPanel extends JPanel {
         frame.setVisible(true);
     }
     
+    /**
+     * Add ActionListener to Next button
+     * 
+     * @param al ActionListener
+     */
     public void addNextEndListener(ActionListener al) {
         next.addActionListener(al);
     }
     
-    private JFreeChart createChartSucces(String graphTitle, String titleX, String titleY){
+    /**
+     * Create Chart to show Success of training neural net.
+     * 
+     * @param graphTitle Graph name
+     * @param titleX X axis name
+     * @param titleY Y axis name
+     * @return new Chart
+     */
+    private JFreeChart createChartSuccess(String graphTitle, String titleX, String titleY){
         JFreeChart result = ChartFactory.createXYLineChart(
             graphTitle,
             titleX,
@@ -76,6 +119,14 @@ public class TrainingPanel extends JPanel {
         return result;
     }
     
+    /**
+     * Create Chart to show MSE of training neural net.
+     * 
+     * @param graphTitle Graph name
+     * @param titleX X axis name
+     * @param titleY Y axis name
+     * @return new Chart
+     */    
     private JFreeChart createChart(String graphTitle, String titleX, String titleY){
         JFreeChart result = ChartFactory.createXYLineChart(
             graphTitle,
@@ -87,9 +138,16 @@ public class TrainingPanel extends JPanel {
         return result;
     }
     
+    /**
+     * Initialize layout.
+     * 
+     * @param graphTitle Graph name
+     * @param titleX X axis name
+     * @param titleY Y axis name
+     */
     private void initLayout(String graphTitle, String titleX, String titleY) {
         JFreeChart chart = createChart(graphTitle, titleX, titleY);
-        JFreeChart succesChart = createChartSucces("Úspešnosť", titleX, "%");
+        JFreeChart succesChart = createChartSuccess("Úspešnosť", titleX, "%");
         ChartPanel chartPanel = new ChartPanel( chart );
         ChartPanel chartPanelSucces = new ChartPanel( succesChart );
         chartPanel.setPreferredSize( new java.awt.Dimension( 560 , 200 ) );
@@ -102,10 +160,9 @@ public class TrainingPanel extends JPanel {
     
     public TrainingPanel(Model model, String graphTitle, String titleX, String titleY, XYSeriesCollection seriesCollection, XYSeriesCollection seriesCollectionSucces) {
         this.model = model;
+        this.setBackground(Color.WHITE);    
         this.seriesCollection = seriesCollection;
         this.seriesCollectionSucces = seriesCollectionSucces;
-        this.setBackground(Color.WHITE);    
-        trainLayout = new GroupLayout(this);
         initLayout(graphTitle, titleX, titleY);
     }
 }
