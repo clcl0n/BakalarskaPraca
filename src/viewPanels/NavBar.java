@@ -11,10 +11,13 @@ import viewComponents.buttons.ResetButton;
 
 public class NavBar extends JPanel {
     
-    private final GroupLayout navLayout;
+    //Layout
+    private final GroupLayout navLayout = new GroupLayout(this);
     
+    //Application Name
     private final JLabel appLabel = new JLabel("Bakalárska práca");
 
+    //Navigation Buttons
     private final NavButton data = new NavButton("Dáta");    
     private final NavButton settings = new NavButton("Nastavenia"); 
     private final NavButton training = new NavButton("Trénovanie");
@@ -22,9 +25,21 @@ public class NavBar extends JPanel {
     private final NavButton singleInput = new NavButton("Test ????");
     private final ResetButton reset = new ResetButton("Reset");
     
+    
     public boolean isHighlightData() {
         return data.getH();
     }
+    
+    /**
+     * Add ActionListener to Reset button
+     * 
+     * @param al ActionListener
+     */
+    public void addResetListener(ActionListener al) {
+        reset.addActionListener(al);
+    }
+    
+    //Highlight & unHighlight
     
     public void unHighlightStart() {
         singleInput.unHighlight();
@@ -32,11 +47,7 @@ public class NavBar extends JPanel {
         training.unHighlight();
         settings.unHighlight();
         data.highlight();
-    }
-    
-    public void addResetListener(ActionListener al) {
-        reset.addActionListener(al);
-    }
+    }    
     
     public void highlightSingleInput() {
         singleInput.highlight();
@@ -78,6 +89,9 @@ public class NavBar extends JPanel {
         training.highlight();
     }
     
+    /**
+     * Initialize Layout
+     */
     private void initLayout() {
         navLayout.setHorizontalGroup(
             navLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -114,9 +128,7 @@ public class NavBar extends JPanel {
     }
     
     public NavBar() {
-        this.setBackground(new Color(75, 81, 98));
-        
-        navLayout = new GroupLayout(this);
+        this.setBackground(new Color(75, 81, 98));        
         initLayout();
         this.setLayout(navLayout);
         

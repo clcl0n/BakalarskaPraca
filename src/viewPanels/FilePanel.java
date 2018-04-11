@@ -15,9 +15,9 @@ import viewComponents.labels.PanelLabel;
 
 public class FilePanel extends JPanel {
    
-    private Model neuModel;
-    
-    private final GroupLayout fileLayout;
+    //Model & Layout
+    private final Model neuModel;
+    private final GroupLayout fileLayout = new GroupLayout(this);
     
     //Panel Label
     PanelLabel label = new PanelLabel("Dáta");
@@ -28,7 +28,6 @@ public class FilePanel extends JPanel {
     
     //Group separatos
     Separator sepFile = new Separator();    
-    //Separator sepFromFile = new Separator();
     
     //Radio buttons
     RadioBtn parkinson = new RadioBtn("Parkinson");
@@ -44,21 +43,14 @@ public class FilePanel extends JPanel {
     BasicButton next = new BasicButton("Dalej");
     BasicButton netFromFile = new BasicButton("Načítanie");
     
-    public FilePanel(Model neuModel) {
-        this.neuModel = neuModel;
-        this.setBackground(Color.WHITE);
-        this.setSize(new Dimension(800, 400));
-        this.fileLayout = new GroupLayout(this);
-        this.initLayout();
-        setDefValue();
-        this.setLayout(fileLayout);
-    }
-    
     private void setDefValue() {
         parkinson.setSelected(true);
         neuModel.setIsParkinson(true);
     }
     
+    /**
+     * Initialize Layout
+     */
     private void initLayout() {
         fileLayout.setHorizontalGroup(
             fileLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -116,6 +108,7 @@ public class FilePanel extends JPanel {
                 .addContainerGap())
         );        
         
+        //RadioButton Group
         buttonGroup.add(parkinson);
         buttonGroup.add(arrhythmia);
         buttonGroup.add(breastCancer);
@@ -124,13 +117,25 @@ public class FilePanel extends JPanel {
     
     }
     
+    /**
+     * Add ActionListeners to FromFile button 
+     * 
+     * @param al ActionListener
+     */
     public void addFromFileListener(ActionListener al) {
         netFromFile.addActionListener(al);
     }
     
-    public void addChooseFileTypeListener(ActionListener acl) {
-        next.addActionListener(acl);
+    /**
+     * Add ActionListener to ChooseFile button
+     * 
+     * @param al ActionListener 
+     */
+    public void addChooseFileTypeListener(ActionListener al) {
+        next.addActionListener(al);
     }
+    
+    //Is Functions
     
     public boolean isSelectedParkinson() {
         return parkinson.isSelected();
@@ -150,6 +155,14 @@ public class FilePanel extends JPanel {
 
     public boolean isSelectedCustom() {
         return custom.isSelected();
-    }    
+    }
     
+    public FilePanel(Model neuModel) {
+        this.neuModel = neuModel;
+        this.setBackground(Color.WHITE);
+        this.setSize(new Dimension(800, 400));
+        this.initLayout();
+        setDefValue();
+        this.setLayout(fileLayout);
+    }    
 }
