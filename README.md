@@ -7,3 +7,4 @@ Cieľom bakalárskej práce je vytvorenie aplikácie v prostredí Java na vytvá
 2. Naštudovať funkcionality vybraného Java aplikačného rámca.
 3. Vytvorenie aplikácie pre vytváranie neurónových modelov na diagnostiku ochorení.
 4. Na rôznych databázach ochorení natrénovať a otestovať neurónové modely.
+
